@@ -1,0 +1,8 @@
+openshift-applier
+roles/*
+!roles/configure-nexus
+*.pyc
+.idea
+*.iml
+gdsl
+*.retry
