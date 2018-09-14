@@ -101,7 +101,7 @@ openshift_cluster_content:
     tags:
     - nexus
     post_steps:
-    - role: "labs-ci-cd/roles/configure-nexus"
+    - role: "CICDAnsible/roles/configure-nexus"
   - name: jenkins-persistent
     template: "{{ playbook_dir }}/openshift-templates/jenkins/jenkins-persistent-template.yml"
     params: "{{ playbook_dir }}/params/jenkins/deploy"
