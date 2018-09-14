@@ -71,9 +71,6 @@ objects:
               image: ' '
               command:
                 - 'hoverfly'
-              args:
-                - '-listen-on-host'
-                - '0.0.0.0'
               ports:
                 - containerPort: 8500
                   protocol: TCP
