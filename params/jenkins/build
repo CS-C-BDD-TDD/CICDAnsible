@@ -1,4 +1,4 @@
-SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/domino-ci-cd.git
+SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/CICDAnsible.git
 NAME=jenkins
 SOURCE_REPOSITORY_REF=master
 SOURCE_REPOSITORY_CONTEXT_DIR=s2i-config/jenkins-master
