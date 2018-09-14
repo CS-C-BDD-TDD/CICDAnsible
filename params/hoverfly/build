@@ -1,4 +1,4 @@
 NAME=hoverfly
-SOURCE_REPOSITORY_URL=https://github.com/rht-labs/labs-ci-cd.git
+SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/domino-ci-cd.git
 SOURCE_REPOSITORY_REF=master
 SOURCE_CONTEXT_DIR=docker/hoverfly
