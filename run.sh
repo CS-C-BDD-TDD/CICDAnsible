@@ -45,10 +45,9 @@ fi
 
 DOCKER_RUN_COMMAND="ansible-galaxy install -r /tmp/src/requirements.yml --roles-path=/tmp/src/roles && $DOCKER_RUN_COMMAND"
 
-#docker run --rm -i \
-#    -v $(pwd):/tmp/src:z \
-#    -v $HOME/.kube:/root/.kube:z \
-#    -t redhatcop/openshift-applier:v3.9.0 \
-#    /bin/sh -c "$DOCKER_RUN_COMMAND"
-ansible-galaxy install -r requirements.yml --roles-path=./roles && ansible-playbook -i ./inventory apply.yml -e target=bootstrap && ansible-playbook -i ./inventory apply.yml -e target=tools
+docker run --rm -i \
+    -v $(pwd):/tmp/src:z \
+    -v $HOME/.kube:/root/.kube:z \
+    -t redhatcop/openshift-applier:v3.9.0 \
+    /bin/sh -c "$DOCKER_RUN_COMMAND"
 
