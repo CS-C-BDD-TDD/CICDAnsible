@@ -114,3 +114,10 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - hoverfly
+  - name: hoverfly
+    template: "{{ playbook_dir }}/openshift-templates/mysql/template.yml"
+    params: "{{ playbook_dir }}/params/mysql/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - mysql
+
