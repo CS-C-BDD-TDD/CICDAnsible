@@ -2,10 +2,9 @@
 - name: Deploy {{ target }} 
   hosts: "{{ target }}"
   vars:
-    ci_cd_namespace: dhs-ci-cd
-    dev_namespace: dhs-dev
-    test_namespace: dhs-test
-    prod_namespace: dhs-prod
+    ci_cd_namespace: lab-ci-cd
+    dev_namespace: lab-dev
+    test_namespace: lab-test
   tasks:
     - include_role:
         name: openshift-applier/roles/openshift-applier
