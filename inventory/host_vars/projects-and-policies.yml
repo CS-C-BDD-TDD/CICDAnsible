@@ -15,10 +15,16 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/projectrequests/dev"
     tags:
     - projects
-  - name: demo
+  - name: test
     template: "https://raw.githubusercontent.com/redhat-cop/cluster-lifecycle/v3.9.0/files/projectrequest/template.yml"
     template_action: create
     params: "{{ playbook_dir }}/params/projectrequests/test"
+    tags:
+    - projects
+  - name: prod
+    template: "https://raw.githubusercontent.com/redhat-cop/cluster-lifecycle/v3.9.0/files/projectrequest/template.yml"
+    template_action: create
+    params: "{{ playbook_dir }}/params/projectrequests/prod"
     tags:
     - projects
 - object: group-role-binding
@@ -37,6 +43,12 @@ openshift_cluster_content:
     - rolebinding-group
   - name: "labs-dev-acl"
     namespace: "{{ test_namespace }}"
+    template: "{{ playbook_dir }}/openshift-templates/rolebinding-group/template.yml"
+    params: "{{ playbook_dir }}/params/rolebinding-group/all"
+    tags:
+    - rolebinding-group
+  - name: "labs-dev-acl"
+    namespace: "{{ prod_namespace }}"
     template: "{{ playbook_dir }}/openshift-templates/rolebinding-group/template.yml"
     params: "{{ playbook_dir }}/params/rolebinding-group/all"
     tags:
