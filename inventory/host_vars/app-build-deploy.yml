@@ -19,7 +19,7 @@ openshift_cluster_content:
     tags:
     - java-deploy
   - name: mysql-dev
-    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
+    template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev"
     namespace: "{{ dev_namespace }}"
     tags:
@@ -33,7 +33,7 @@ openshift_cluster_content:
 - object: test-stage
   content:
   - name: mysql-test
-    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
+    template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
     namespace: "{{ test_namespace }}"
     tags:
