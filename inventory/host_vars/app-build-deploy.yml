@@ -1,4 +1,3 @@
-
 ---
 ansible_connection: local
 openshift_cluster_content:
@@ -10,6 +9,12 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - java-build
+  - name: vue-app-build
+    template: "{{ playbook_dir }}/openshift-templates/s2i-app-build/template-no-secrets.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/build"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - vue-build
 - object: dev-stage
   content:
   - name: java-app
@@ -18,6 +23,12 @@ openshift_cluster_content:
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
+  - name: vue-app
+    template: "{{ playbook_dir }}/openshift-templates/http-app-deploy/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/deploy_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - vue-deploy
   - name: mysql-dev
     template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev"
@@ -30,6 +41,12 @@ openshift_cluster_content:
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
+  - name: fabric8-rolebinding
+    template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/fabric8_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - vue-deploy
 - object: test-stage
   content:
   - name: mysql-test
@@ -44,9 +61,21 @@ openshift_cluster_content:
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy
+  - name: vue-app
+    template: "{{ playbook_dir }}/openshift-templates/http-app-deploy/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - vue-deploy
   - name: fabric8-rolebinding
     template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
     params: "{{ playbook_dir }}/params/human-review-backend/fabric8_test"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy
+  - name: fabric8-rolebinding
+    template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/fabric8_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - vue-deploy
