@@ -58,6 +58,10 @@ objects:
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        volumeMounts:
+        - mountPath: /opt/app-root/src/config/
+          name: "${NAME}"
+          readOnly: true
     test: false
     triggers:
     - type: ConfigChange
@@ -94,6 +98,15 @@ objects:
     sessionAffinity: None
     type: ClusterIP
 - apiVersion: v1
+  kind: ConfigMap
+  data:
+    env.js: |
+      var backendUrl = "${BACKEND_URL}"
+  metadata:
+    labels:
+      name: "${NAME}"
+    name: "${NAME}"
+- apiVersion: v1
   kind: Route
   metadata:
     labels:
@@ -123,6 +136,10 @@ parameters:
 - name: NAME
   displayName: Name
   description: The name assigned to all objects and the related imagestream.
+  required: true
+- name: BACKEND_URL
+  displayName: Backend URL
+  description: The URL for the HR Backend
   required: true
 - name: PIPELINES_NAMESPACE
   displayName: Project/Namespace for Jenkins Pipelines
