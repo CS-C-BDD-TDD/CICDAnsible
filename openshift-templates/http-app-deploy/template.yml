@@ -54,14 +54,17 @@ objects:
             protocol: TCP
           resources: {}
           terminationMessagePath: "/dev/termination-log"
+          volumeMounts:
+            - mountPath: /opt/app-root/src/config/
+              name: "volume-${NAME}"
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
-        volumeMounts:
-        - mountPath: /opt/app-root/src/config/
-          name: "${NAME}"
-          readOnly: true
+        volumes:
+        - configMap:
+            name: "${NAME}"
+          name: "volume-${NAME}"
     test: false
     triggers:
     - type: ConfigChange
