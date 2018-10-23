@@ -80,6 +80,12 @@ openshift_cluster_content:
     tags:
       - jenkins-slaves
       - mongodb-slave
+  - name: jenkins-slave-twistlock-scanner
+    file: "{{ playbook_dir }}/openshift-templates/twistlock-slave-podtemplate/configmap.yml"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+      - jenkins-slaves
+      - twistlock-slaves
 - object: ci-cd-deployments
   content:
   - name: sonarqube
