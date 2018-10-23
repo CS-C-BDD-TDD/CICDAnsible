@@ -1,89 +1,71 @@
----
 apiVersion: v1
-kind: Template
-objects:
-- kind: ConfigMap
-  apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    twistlock-build-pod: |-
+      <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+        <inheritFrom></inheritFrom>
+        <name>jenkins-slave-npm-with-twistlock</name>
+        <instanceCap>2147483647</instanceCap>
+        <idleMinutes>0</idleMinutes>
+        <label>twistlock-scanner</label>
+        <serviceAccount>jenkins</serviceAccount>
+        <nodeSelector></nodeSelector>
+        <volumes>
+          <org.csanchez.jenkins.plugins.kubernetes.volumes.HostPathVolume>
+            <mountPath>/var/run/docker.sock</mountPath>
+            <hostPath>/var/run/docker.sock</hostPath>
+          </org.csanchez.jenkins.plugins.kubernetes.volumes.HostPathVolume
+        <volumes/>
+        <containers>
+          <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+            <name>jnlp</name>
+            <image>docker-registry.default.svc:5000/labs-ci-cd/jenkins-slave-npm</image>
+            <privileged>false</privileged>
+            <alwaysPullImage>false</alwaysPullImage>
+            <workingDir>/tmp</workingDir>
+            <command></command>
+            <args>${computer.jnlpmac} ${computer.name}</args>
+            <ttyEnabled>false</ttyEnabled>
+            <resourceRequestCpu></resourceRequestCpu>
+            <resourceRequestMemory></resourceRequestMemory>
+            <resourceLimitCpu></resourceLimitCpu>
+            <resourceLimitMemory></resourceLimitMemory>
+            <envVars/>
+          </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+          <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+            <name>twistlock-scanner</name>
+            <image>twistlock-scanner:latest</image>
+            <privileged>true</privileged>
+            <alwaysPullImage>true</alwaysPullImage>
+            <workingDir></workingDir>
+            <command>cat</command>
+            <args></args>
+            <ttyEnabled>true</ttyEnabled>
+            <resourceRequestCpu>1</resourceRequestCpu>
+            <resourceRequestMemory>1Gi</resourceRequestMemory>
+            <resourceLimitCpu></resourceLimitCpu>
+            <resourceLimitMemory></resourceLimitMemory>
+            <envVars/>
+            <ports/>
+            <livenessProbe>
+              <execArgs></execArgs>
+              <timeoutSeconds>0</timeoutSeconds>
+              <initialDelaySeconds>0</initialDelaySeconds>
+              <failureThreshold>0</failureThreshold>
+              <periodSeconds>0</periodSeconds>
+              <successThreshold>0</successThreshold>
+            </livenessProbe>
+          </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
+        </containers>
+        <envVars/>
+        <annotations/>
+        <imagePullSecrets/>
+        <nodeProperties/>
+      </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+  kind: ConfigMap
   metadata:
-    name: jenkins-slave
     labels:
       role: jenkins-slave
-  data:
-    template1: |-
-      <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
-          <inheritFrom></inheritFrom>
-          <name>jenkins-slave-npm-with-twistlock</name>
-          <namespace></namespace>
-          <privileged>false</privileged>
-          <alwaysPullImage>false</alwaysPullImage>
-          <instanceCap>2147483647</instanceCap>
-          <slaveConnectTimeout>100</slaveConnectTimeout>
-          <idleMinutes>60</idleMinutes>
-          <activeDeadlineSeconds>0</activeDeadlineSeconds>
-          <label>jenkins-slave-npm-with-twistlock</label>
-          <nodeSelector></nodeSelector>
-          <nodeUsageMode>NORMAL</nodeUsageMode>
-          <customWorkspaceVolumeEnabled>false</customWorkspaceVolumeEnabled>
-          <workspaceVolume class="org.csanchez.jenkins.plugins.kubernetes.volumes.workspace.EmptyDirWorkspaceVolume">
-            <memory>false</memory>
-          </workspaceVolume>
-          <volumes>
-            <org.csanchez.jenkins.plugins.kubernetes.volumes.HostPathVolume>
-              <mountPath>/var/run/docker.sock</mountPath>
-              <hostPath>/var/run/docker.sock</hostPath>
-            </org.csanchez.jenkins.plugins.kubernetes.volumes.HostPathVolume>
-          </volumes>
-          <containers>
-            <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-              <name>jnlp</name>
-              <image>docker-registry.default.svc:5000/labs-ci-cd/jenkins-slave-npm</image>
-              <privileged>false</privileged>
-              <alwaysPullImage>true</alwaysPullImage>
-              <workingDir>/tmp</workingDir>
-              <command></command>
-              <args>${computer.jnlpmac} ${computer.name}</args>
-              <ttyEnabled>true</ttyEnabled>
-              <resourceRequestCpu></resourceRequestCpu>
-              <resourceRequestMemory></resourceRequestMemory>
-              <resourceLimitCpu></resourceLimitCpu>
-              <resourceLimitMemory></resourceLimitMemory>
-              <envVars/>
-              <ports/>
-              <livenessProbe>
-                <execArgs></execArgs>
-                <timeoutSeconds>0</timeoutSeconds>
-                <initialDelaySeconds>0</initialDelaySeconds>
-                <failureThreshold>0</failureThreshold>
-                <periodSeconds>0</periodSeconds>
-                <successThreshold>0</successThreshold>
-              </livenessProbe>
-            </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-            <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-              <name>twistlock-scanne</name>
-              <image>twistlock-scanner:latest</image>
-              <privileged>true</privileged>
-              <alwaysPullImage>true</alwaysPullImage>
-              <workingDir></workingDir>
-              <command>cat</command>
-              <args></args>
-              <ttyEnabled>true</ttyEnabled>
-              <resourceRequestCpu></resourceRequestCpu>
-              <resourceRequestMemory></resourceRequestMemory>
-              <resourceLimitCpu></resourceLimitCpu>
-              <resourceLimitMemory></resourceLimitMemory>
-              <envVars/>
-              <ports/>
-              <livenessProbe>
-                <execArgs></execArgs>
-                <timeoutSeconds>0</timeoutSeconds>
-                <initialDelaySeconds>0</initialDelaySeconds>
-                <failureThreshold>0</failureThreshold>
-                <periodSeconds>0</periodSeconds>
-                <successThreshold>0</successThreshold>
-              </livenessProbe>
-            </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-          </containers>
-          <envVars/>
-          <annotations/>
-          <imagePullSecrets/>
-        </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
+    name: jenkins-slave
+kind: List
