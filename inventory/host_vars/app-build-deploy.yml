@@ -1,4 +1,3 @@
-
 ---
 ansible_connection: local
 openshift_cluster_content:
@@ -6,35 +5,77 @@ openshift_cluster_content:
   content:
   - name: java-app-build
     template: "{{ playbook_dir }}/openshift-templates/s2i-app-build/template-no-secrets.yml"
-    params: "{{ playbook_dir }}/params/java-app/build"
+    params: "{{ playbook_dir }}/params/human-review-backend/build"
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - java-build
+  - name: vue-app-build
+    template: "{{ playbook_dir }}/openshift-templates/s2i-app-build/template-no-secrets.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/build"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - vue-build
 - object: dev-stage
   content:
   - name: java-app
     template: "{{ playbook_dir }}/openshift-templates/automation-api-hsql/template.yml"
-    params: "{{ playbook_dir }}/params/java-app/deploy_dev"
+    params: "{{ playbook_dir }}/params/human-review-backend/deploy_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - java-deploy
+  - name: vue-app
+    template: "{{ playbook_dir }}/openshift-templates/http-app-deploy/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/deploy_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - vue-deploy
+  - name: mysql-dev
+    template: "openshift//mysql-persistent"
+    params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev"
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
   - name: fabric8-rolebinding
     template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
-    params: "{{ playbook_dir }}/params/java-app/fabric8_dev"
+    params: "{{ playbook_dir }}/params/human-review-backend/fabric8_dev"
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
+  - name: fabric8-rolebinding
+    template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/fabric8_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - vue-deploy
 - object: test-stage
   content:
+  - name: mysql-test
+    template: "openshift//mysql-persistent"
+    params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
   - name: java-app
     template: "{{ playbook_dir }}/openshift-templates/automation-api-hsql/template.yml"
-    params: "{{ playbook_dir }}/params/java-app/deploy_test"
+    params: "{{ playbook_dir }}/params/human-review-backend/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
+  - name: vue-app
+    template: "{{ playbook_dir }}/openshift-templates/http-app-deploy/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - vue-deploy
+  - name: fabric8-rolebinding
+    template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-backend/fabric8_test"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy
   - name: fabric8-rolebinding
     template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
-    params: "{{ playbook_dir }}/params/java-app/fabric8_test"
+    params: "{{ playbook_dir }}/params/human-review-ui/fabric8_test"
     namespace: "{{ test_namespace }}"
     tags:
-    - java-deploy
+    - vue-deploy

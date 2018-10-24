@@ -15,7 +15,7 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/projectrequests/dev"
     tags:
     - projects
-  - name: demo
+  - name: test
     template: "https://raw.githubusercontent.com/redhat-cop/cluster-lifecycle/v3.9.0/files/projectrequest/template.yml"
     template_action: create
     params: "{{ playbook_dir }}/params/projectrequests/test"
