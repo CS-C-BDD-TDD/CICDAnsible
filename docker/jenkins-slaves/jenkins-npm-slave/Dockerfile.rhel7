@@ -21,7 +21,7 @@ ENV NODEJS_VERSION=10 \
 COPY contrib/bin/scl_enable /usr/local/bin/scl_enable
 ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
 
-RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm nss_wrapper redhat-lsb libXScrnSaver xdg-utils liberation-fonts" && \
+RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg-utils liberation-fonts" && \
     yum install -y --setopt=tsflags=nodocs \
       --disablerepo=* \
       --enablerepo=rhel-7-server-rpms \
