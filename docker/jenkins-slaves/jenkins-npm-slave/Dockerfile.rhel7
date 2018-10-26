@@ -39,4 +39,8 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
 
 RUN npm install -g npm-audit-html npm-audit-ci-wrapper sonarqube-scanner
 
+## Pre-caching the sonar-scanner Java JAR file
+## This command will exit with a non-zero status and an error message, but it can be ignored
+RUN sonar-scanner || echo
+
 USER 1001
