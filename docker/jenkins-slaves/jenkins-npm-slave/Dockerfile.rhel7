@@ -13,9 +13,6 @@ LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    BASH_ENV=/usr/local/bin/scl_enable \
-    ENV=/usr/local/bin/scl_enable \
-    PROMPT_COMMAND=". /usr/local/bin/scl_enable" \
     CHROME_BIN=/bin/google-chrome
 
 COPY contrib/bin/scl_enable /usr/local/bin/scl_enable
@@ -37,10 +34,7 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
     yum clean all -y && \
     rm -rf /var/cache/yum
 
-RUN npm install -g npm-audit-html npm-audit-ci-wrapper sonarqube-scanner
-
-## Pre-caching the sonar-scanner Java JAR file
-## This command will exit with a non-zero status and an error message, but it can be ignored
-RUN sonar-scanner || echo
+RUN npm install -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
+RUN sonar-scanner ## Pre-execute to install dependencies
 
 USER 1001

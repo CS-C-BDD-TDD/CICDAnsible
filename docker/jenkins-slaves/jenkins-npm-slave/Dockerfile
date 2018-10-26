@@ -4,14 +4,11 @@ FROM openshift/jenkins-slave-base-centos7
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    BASH_ENV=/usr/local/bin/scl_enable \
-    ENV=/usr/local/bin/scl_enable \
-    PROMPT_COMMAND=". /usr/local/bin/scl_enable" \
     CHROME_BIN=/bin/google-chrome
 
 ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
 
-RUN curl --silent --location https://rpm.nodesource.com/setup_10.x | bash -
+RUN curl --silent --location https://rpm.nodesource.com/setup_${NODEJS_VERSION}.x | bash -
 
 RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" && \
     yum install -y --setopt=tsflags=nodocs \
@@ -23,6 +20,8 @@ RUN INSTALL_PKGS="nodejs redhat-lsb libXScrnSaver xdg-utils liberation-fonts" &&
     yum clean all -y && \
     rm -rf /var/cache/yum
 
-RUN npm install -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
+USER root
+RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner || cat /home/jenkins/.npm/_logs/*-debug.log
+RUN sonar-scanner || echo
 
 USER 1001
