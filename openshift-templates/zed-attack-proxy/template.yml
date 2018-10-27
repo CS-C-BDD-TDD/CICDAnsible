@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: "zed-attack-proxy"
+parameters:
+- name: SOURCE_IMAGE_NAME
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    generation: 1
+    labels:
+      app: zap
+    name: zap
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: ${SOURCE_IMAGE_NAME}
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    generation: 1
+    labels:
+      app: zap
+    name: zap
+  spec:
+    replicas: 1
+    selector:
+      app: zap
+      deploymentconfig: zap
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+      type: Recreate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        labels:
+          app: zap
+          deploymentconfig: zap
+      spec:
+        containers:
+        - command:
+          - 'zap-x.sh'
+          - '-daemon'
+          - '-host'
+          - '0.0.0.0'
+          - '-port'
+          - '8080'
+          - '-config'
+          - 'api.addrs.addr.name=.*'
+          - '-config'
+          - 'api.addrs.addr.regex=true'
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 45
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: zap
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - zap
+        from:
+          kind: ImageStreamTag
+          name: zap:latest
+      type: ImageChange
+    - type: ConfigChange
