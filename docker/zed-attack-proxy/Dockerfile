@@ -69,5 +69,7 @@ RUN chown root:root /zap/zap-x.sh && \
 	chmod 777 /zap -R && \
 	chmod 777 /home/zap -R
 
+EXPOSE 8080
+
 USER 1001
 ENTRYPOINT [ "/zap/uid_entrypoint.sh" ]
