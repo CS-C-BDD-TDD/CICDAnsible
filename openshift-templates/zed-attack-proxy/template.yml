@@ -1,17 +1,22 @@
+---
 apiVersion: v1
 kind: Template
 metadata:
-  name: "zed-attack-proxy"
+  name: SOURCE_IMAGE_NAME
 parameters:
 - name: SOURCE_IMAGE_NAME
+  displayName: Container Image for deployment
+  description: 'The container image in the form of <image name> (No Tags or registry hosts)'
+  value: 'zed-attack-proxy'
+  required: true
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
     generation: 1
     labels:
-      app: zap
-    name: zap
+      app: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}
   spec:
     lookupPolicy:
       local: false
@@ -32,13 +37,13 @@ objects:
   metadata:
     generation: 1
     labels:
-      app: zap
-    name: zap
+      app: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}
   spec:
     replicas: 1
     selector:
-      app: zap
-      deploymentconfig: zap
+      app: ${SOURCE_IMAGE_NAME}
+      deploymentconfig: ${SOURCE_IMAGE_NAME}
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
@@ -50,11 +55,9 @@ objects:
       type: Recreate
     template:
       metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftWebConsole
         labels:
-          app: zap
-          deploymentconfig: zap
+          app: ${SOURCE_IMAGE_NAME}
+          deploymentconfig: ${SOURCE_IMAGE_NAME}
       spec:
         containers:
         - command:
@@ -79,7 +82,7 @@ objects:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          name: zap
+          name: ${SOURCE_IMAGE_NAME}
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -106,9 +109,9 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - zap
+        - ${SOURCE_IMAGE_NAME}
         from:
           kind: ImageStreamTag
-          name: zap:latest
+          name: ${SOURCE_IMAGE_NAME}:latest
       type: ImageChange
     - type: ConfigChange
