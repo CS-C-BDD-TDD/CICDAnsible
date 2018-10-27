@@ -120,3 +120,10 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - hoverfly
+  - name: zalenium
+    template: "{{ playbook_dir }}/openshift-template/zalenium/template.yml"
+    params: "{{ playbook_dir }}/params/zalenium/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - zalenium
+    - selenium
