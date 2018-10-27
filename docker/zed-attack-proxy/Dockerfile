@@ -70,4 +70,4 @@ RUN chown root:root /zap/zap-x.sh && \
 	chmod 777 /home/zap -R
 
 USER 1001
-ENTRYPOINT [ "uid_entrypoint.sh" ]
+ENTRYPOINT [ "/zap/uid_entrypoint.sh" ]
