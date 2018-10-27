@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: SOURCE_IMAGE_NAME
+  name: zed-attack-proxy
 parameters:
 - name: SOURCE_IMAGE_NAME
   displayName: Container Image for deployment
-  description: 'The container image in the form of <image name> (No Tags or registry hosts)'
+  description: The container image in the form of <image name> (No Tags or registry hosts)
   value: 'zed-attack-proxy'
   required: true
 objects:
@@ -16,7 +16,7 @@ objects:
     generation: 1
     labels:
       app: ${SOURCE_IMAGE_NAME}
-    name: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}-is
   spec:
     lookupPolicy:
       local: false
@@ -38,7 +38,7 @@ objects:
     generation: 1
     labels:
       app: ${SOURCE_IMAGE_NAME}
-    name: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}-dc
   spec:
     replicas: 1
     selector:
@@ -111,7 +111,7 @@ objects:
   metadata:
     labels:
       app: ${SOURCE_IMAGE_NAME}
-    name: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}-svc
   spec:
     ports:
     - name: 8080-tcp
@@ -129,14 +129,12 @@ objects:
   metadata:
     labels:
       app: ${SOURCE_IMAGE_NAME}
-    name: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}-route
   spec:
     port:
       targetPort: 8080-tcp
-    tls:
-      termination: edge
     to:
       kind: Service
-      name: ${SOURCE_IMAGE_NAME}
+      name: ${SOURCE_IMAGE_NAME}-svc
       weight: 100
     wildcardPolicy: None
