@@ -69,6 +69,6 @@ RUN chown root:root /zap/zap-x.sh && \
 	chmod 777 /zap -R && \
 	chmod 777 /home/zap -R
 
-EXPOSE 8080
+EXPOSE 8080 8090
 
 USER 1001
