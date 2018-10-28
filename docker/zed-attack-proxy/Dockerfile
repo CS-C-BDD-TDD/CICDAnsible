@@ -12,7 +12,7 @@ RUN yum install -y redhat-rpm-config \
     java-1.8.0-openjdk wget curl \
     xmlstarlet git x11vnc gettext tar \
     xorg-x11-server-Xvfb openbox xterm \
-    net-tools python-pip unzip \
+    net-tools python-pip unzip xauth \
     firefox nss_wrapper java-1.8.0-openjdk-headless \
     java-1.8.0-openjdk-devel nss_wrapper git && \
     yum clean all

@@ -2,3 +2,4 @@ NAME=zed-attack-proxy
 SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/CICDAnsible.git
 SOURCE_REPOSITORY_REF=DHS-84-Implement-Zed-Attack-Proxy
 SOURCE_CONTEXT_DIR=docker/zed-attack-proxy
+SOURCE_DOCKERFILE_PATH=Dockerfile.rhel7

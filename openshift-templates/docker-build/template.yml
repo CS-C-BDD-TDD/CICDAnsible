@@ -38,6 +38,8 @@ objects:
       type: Git
     strategy:
       type: Docker
+      dockerStrategy:
+        dockerfilePath: ${SOURCE_DOCKERFILE_PATH}
     triggers:
     - github:
         secret: "${GITHUB_WEBHOOK_SECRET}"
@@ -67,3 +69,9 @@ parameters:
   displayName: Git Context Directory
   description: Set this to the directory where the build information is (e.g. Dockerfile)
     if not using the root directory
+- name: SOURCE_DOCKERFILE_PATH
+  displayName: Path within repository where the Dockerfile can be found
+  description: Allows for specifying an alternate Dockerfile
+  required: true
+  value: 'Dockerfile'
+
