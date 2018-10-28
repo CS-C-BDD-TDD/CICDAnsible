@@ -72,4 +72,3 @@ RUN chown root:root /zap/zap-x.sh && \
 EXPOSE 8080
 
 USER 1001
-ENTRYPOINT [ "/zap/uid_entrypoint.sh" ]

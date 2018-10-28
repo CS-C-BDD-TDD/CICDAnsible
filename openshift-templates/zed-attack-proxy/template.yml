@@ -77,6 +77,8 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
+          - containerPort: 8090
+            protocol: TCP
           readinessProbe:
             failureThreshold: 3
             httpGet:
@@ -118,6 +120,10 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
+    - name: 8090-tcp
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
     selector:
       deploymentconfig: ${SOURCE_IMAGE_NAME}
     sessionAffinity: None

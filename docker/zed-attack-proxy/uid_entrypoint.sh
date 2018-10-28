@@ -7,4 +7,4 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
-zap-x.sh -daemon -host 0.0.0.0 -port -8080 -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -config api.disablekey=true
+webswing.sh
