@@ -1,4 +1,5 @@
-SOURCE_REPOSITORY_URL=https://github.com/rht-labs/owasp-zap-openshift.git
-BUILDER_IMAGE_NAME=centos:centos7
+SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/CICDAnsible/
+SOURCE_CONTEXT_DIR=docker/jenkins-slaves/jenkins-slave-zap
+BUILDER_IMAGE_NAME=openshift/jenkins-slave-base-centos7
 NAME=jenkins-slave-zap
 SOURCE_REPOSITORY_REF=master
