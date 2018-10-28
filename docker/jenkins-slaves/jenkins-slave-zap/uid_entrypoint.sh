@@ -9,5 +9,4 @@ fi
 
 # Execute the provided command with arguments AFTER the UID setup
 # Run the process in the background and output the PID
-$@ &
-echo $!
+$@
