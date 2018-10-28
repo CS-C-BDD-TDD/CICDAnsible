@@ -144,3 +144,17 @@ objects:
       name: ${SOURCE_IMAGE_NAME}-svc
       weight: 100
     wildcardPolicy: None
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${SOURCE_IMAGE_NAME}
+    name: ${SOURCE_IMAGE_NAME}-webswing
+  spec:
+    port:
+      targetPort: 8090-tcp
+    to:
+      kind: Service
+      name: ${SOURCE_IMAGE_NAME}-svc
+      weight: 100
+    wildcardPolicy: None

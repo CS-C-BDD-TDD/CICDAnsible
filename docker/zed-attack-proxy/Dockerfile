@@ -27,7 +27,7 @@ RUN mkdir -p /zap/wrk
 
 RUN mkdir -p /home/zap/.vnc
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk/
 ENV PATH $JAVA_HOME/bin:/zap/:$PATH
 ENV ZAP_PATH /zap/zap.sh
 ENV HOME /home/zap
