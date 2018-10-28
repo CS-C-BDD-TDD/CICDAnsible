@@ -8,7 +8,7 @@ RUN yum install -y epel-release && \
     yum clean all
 RUN yum install -y redhat-rpm-config \
     make automake autoconf gcc gcc-c++ \
-    libstdc++ libstdc++-devel \
+    libstdc++ libstdc++-devel which \
     java-1.8.0-openjdk wget curl \
     xmlstarlet git x11vnc gettext tar \
     xorg-x11-server-Xvfb openbox xterm \
@@ -41,33 +41,26 @@ COPY .xinitrc /home/zap
 
 WORKDIR /zap
 # Download and expand the latest stable release 
-RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersions.xml | xmlstarlet sel -t -v //url |grep -i weekly | wget --content-disposition -i - && \
-	unzip *.zip && \
+RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersions.xml | xmlstarlet sel -t -v //url |grep -i weekly | wget -q --content-disposition -i - && \
+	unzip -q *.zip && \
 	rm *.zip && \
 	cp -R ZAP*/* . &&  \
 	rm -R ZAP* && \
 	curl -s -L https://bitbucket.org/meszarv/webswing/downloads/webswing-2.5.5-distribution.zip > webswing.zip && \
-	unzip webswing.zip && \
+	unzip -q webswing.zip && \
 	rm webswing.zip && \
 	mv webswing-* webswing && \
 	rm -R webswing/demo/ && \
+	rm -f webswing/webswing.config && \
 	touch AcceptedLicense
-COPY webswing.config /zap/webswing-2.3/webswing.config
 COPY uid_entrypoint.sh /zap/uid_entrypoint.sh
+ADD webswing.config /zap/webswing/webswing.config
 
-RUN echo ""
-
-RUN chown root:root /zap/zap-x.sh && \
-	chown root:root /zap/zap-baseline.py && \
-	chown root:root /zap/uid_entrypoint.sh && \
-	chown root:root /zap/zap-webswing.sh && \
-	chown root:root /zap/webswing/webswing.config && \
+RUN chown root:root /zap -R && \
 	chown root:root /home/zap/.xinitrc && \
-  chown root:root /etc/passwd && \
-  chmod 660 /etc/passwd && \
 	chmod a+x /home/zap/.xinitrc && \
-	chmod 777 /zap -R && \
-	chmod 777 /home/zap -R
+  chown root:root /etc/passwd && \
+  chmod 660 /etc/passwd
 
 EXPOSE 8080 8090
 
