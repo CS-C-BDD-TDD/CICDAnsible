@@ -1,5 +1,5 @@
 # This dockerfile builds the zap stable release
-FROM openshift/jenkins-slave-maven-centos7:latest
+FROM openshift/jenkins-slave-base-centos7:latest
 LABEL maintainer="Deven Phillips <deven.phillips@redhat.com>"
 
 USER root
@@ -9,7 +9,7 @@ RUN yum install -y epel-release && \
 
 ENV INSTALL_PKGS=" \
     autoconf automake firefox \
-    gcc gcc-c++ java-1.8.0-openjdk \
+    gcc gcc-c++ java-1.8.0-openjdk-devel \
     libstdc++-devel make net-tools \
     nss_wrapper openbox python-pip \
     x11vnc xauth xmlstarlet \
