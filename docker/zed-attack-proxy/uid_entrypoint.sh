@@ -7,4 +7,4 @@ if ! whoami &> /dev/null; then
   fi
 fi
 
-webswing.sh
+/zap/webswing/webswing.sh
