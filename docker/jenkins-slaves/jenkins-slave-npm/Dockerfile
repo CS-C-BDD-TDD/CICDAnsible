@@ -1,5 +1,5 @@
 #invoke npm in jenkinsfile: sh "scl enable rh-nodejs10 'npm run build'"
-FROM openshift/jenkins-slave-base-rhel7
+FROM openshift/jenkins-slave-base-centos7
 
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
