@@ -53,8 +53,13 @@ objects:
             protocol: TCP
           - containerPort: 8443
             protocol: TCP
-          resources: {}
-          terminationMessagePath: "/dev/termination-log"
+          resources:
+            limits:
+              cpu: ${APP_CPU_LIMIT}m
+              memory: ${APP_MEM_LIMIT}Mi
+            requests:
+              cpu: ${APP_CPU_REQUEST}m
+              memory: ${APP_CPU_REQUEST}Mi          terminationMessagePath: "/dev/termination-log"
           volumeMounts:
             - mountPath: /opt/app-root/src/config/
               name: "volume-${NAME}"
@@ -145,5 +150,26 @@ parameters:
   displayName: Project/Namespace for Jenkins Pipelines
   description: The project/namespace where the Jenkins executing pipelines is deployed.
   required: true
+
+- name: APP_CPU_LIMIT
+  displayName: CPU Utilization Limit
+  description: The limit on the amout of CPU (in millicores) that a container instance can use
+  required: true
+  value: 500
+- name: APP_CPU_REQUEST
+  displayName: CPU Utilization Request
+  description: The minimum amout of CPU (in millicores) that a container instance starts with
+  required: true
+  value: 200
+- name: APP_MEM_LIMIT
+  displayName: MEM Utilization Limit
+  description: The limit on the amout of MEM (in Mibibytes) that a container instance can use
+  required: true
+  value: 1000
+- name: APP_MEM_REQUEST
+  displayName: MEM Utilization Request
+  description: The minimum amout of MEM (in Mibibytes) that a container instance starts with
+  required: true
+  value: 500
 labels:
   template: http-app-deploy-template
