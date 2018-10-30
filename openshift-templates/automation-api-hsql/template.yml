@@ -147,9 +147,10 @@ objects:
     name: ${NAME}-autoscaler-cpu-mem
   spec:
     scaleTargetRef:
-      apiVersion: apps/v1 
-      kind: ReplicationController 
-      name: ${NAME}
+      kind: DeploymentConfig 
+      name: ${NAME} 
+      apiVersion: apps/v1
+      subresource: scale
     minReplicas: ${AUTOSCALE_MIN_REPLICAS}
     maxReplicas: ${AUTOSCALE_MAX_REPLICAS}
     metrics:
