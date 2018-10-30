@@ -2,4 +2,4 @@ SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/CICDAnsible/
 SOURCE_CONTEXT_DIR=docker/jenkins-slaves/jenkins-slave-npm
 BUILDER_IMAGE_NAME=openshift3/jenkins-slave-base-rhel7
 NAME=jenkins-slave-npm
-SOURCE_REPOSITORY_REF=DHS-00-npm-slave-version-update
+SOURCE_REPOSITORY_REF=master
