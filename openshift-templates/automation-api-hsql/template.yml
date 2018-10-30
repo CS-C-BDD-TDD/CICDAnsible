@@ -126,7 +126,7 @@ objects:
 - apiVersion: autoscaling/v2beta1
   kind: HorizontalPodAutoscaler
   metadata:
-    name: hpa-resource-metrics-cpu 
+    name: ${NAME}-autoscaler-cpu-mem
   spec:
     scaleTargetRef:
       apiVersion: apps/v1 
@@ -192,6 +192,5 @@ parameters:
   description: The maximum number of replicas that the autoscaler can create
   required: true
   value: 1
-  
 labels:
   template: http-app-deploy-template
