@@ -59,7 +59,8 @@ objects:
               memory: ${APP_MEM_LIMIT}Mi
             requests:
               cpu: ${APP_CPU_REQUEST}m
-              memory: ${APP_CPU_REQUEST}Mi          terminationMessagePath: "/dev/termination-log"
+              memory: ${APP_CPU_REQUEST}Mi
+          terminationMessagePath: "/dev/termination-log"
           volumeMounts:
             - mountPath: /opt/app-root/src/config/
               name: "volume-${NAME}"
@@ -157,7 +158,7 @@ objects:
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION} 
+        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION}
 parameters:
 - name: NAME
   displayName: Name
@@ -171,46 +172,45 @@ parameters:
   displayName: Project/Namespace for Jenkins Pipelines
   description: The project/namespace where the Jenkins executing pipelines is deployed.
   required: true
-
 - name: APP_CPU_LIMIT
   displayName: CPU Utilization Limit
   description: The limit on the amout of CPU (in millicores) that a container instance can use
   required: true
-  value: 500
+  value: '500'
 - name: APP_CPU_REQUEST
   displayName: CPU Utilization Request
   description: The minimum amout of CPU (in millicores) that a container instance starts with
   required: true
-  value: 200
+  value: '200'
 - name: APP_MEM_LIMIT
   displayName: MEM Utilization Limit
   description: The limit on the amout of MEM (in Mibibytes) that a container instance can use
   required: true
-  value: 1000
+  value: '2000'
 - name: APP_MEM_REQUEST
   displayName: MEM Utilization Request
   description: The minimum amout of MEM (in Mibibytes) that a container instance starts with
   required: true
-  value: 500
+  value: '1000'
 - name: AUTOSCALE_AVERAGE_CPU_UTILIZATION
   displayName: CPU Autoscale Limit
   description: If a container reaches this average CPU utilization, it will trigger autoscale up to the max number of instances
   required: true
-  value: 100
+  value: '100'
 - name: AUTOSCALE_AVERAGE_MEM_UTILIZATION
   displayName: Memory Autoscale Limit
   description: If a container reaches this average memory utilization, it will trigger autoscale up to the max number of instances
   required: true
-  value: 100
+  value: '100'
 - name: AUTOSCALE_MIN_REPLICAS
   displayName: Minimum Replicas
   description: The minimum number of replicas for this application
   required: true
-  value: 1
+  value: '1'
 - name: AUTOSCALE_MAX_REPLICAS
   displayName: Maximum Replicas
   description: The maximum number of replicas that the autoscaler can create
   required: true
-  value: 1
+  value: '1'
 labels:
   template: http-app-deploy-template
