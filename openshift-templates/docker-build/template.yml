@@ -38,7 +38,7 @@ objects:
       type: Git
     strategy:
       dockerStrategy:
-        dockerfilePath: {$DOCKER_FILE_PATH}
+        dockerfilePath: "${DOCKER_FILE_PATH}"
     type: Docker
     triggers:
     - github:
