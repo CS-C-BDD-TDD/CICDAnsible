@@ -1,0 +1,5 @@
+APPLICATION_NAME=humanreview
+MQ_PROTOCOL=openwire,amqp,stomp,mqtt
+MQ_QUEUES=inbound.stix,outbound.stix
+MQ_USERNAME=user
+MQ_PASSWORD=Mprd2bnAMrcan!
