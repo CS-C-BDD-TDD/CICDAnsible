@@ -7,39 +7,68 @@ metadata:
     "description": "Disposable Selenium Grid for use in OpenShift"
 message: |-
   A Zalenium grid has been created in your project. Continue to overview to verify that it exists and start the deployment.
+
          Username: ${ZALENIUM_USER}
          Password: ${ZALENIUM_PASSWORD}
 parameters:
-  - name: "FIREFOX_CONTAINERS"
-    displayName: "Number of initial Firefox containers."
-    description: "This is the number of Firefox containers that should be created when Zalenium starts up."
-    value: "0"
+  - name: "PROJECT_NAME"
+    displayName: "The name of the project/namespace that zalenium is being deployed to"
+    required: true
+  - name: "DESIRED_CONTAINERS"
+    displayName: "Number of initial containers."
+    description: "This is the number of containers that should be created when Zalenium starts up."
+    value: "2"
     required: false
-  - name: "CHROME_CONTAINERS"
-    displayName: "Number of initial Chrome containers."
-    description: "This is the number of Chrome containers that should be created when Zalenium starts up."
-    value: "0"
+  - name: "MAX_DOCKER_SELENIUM_CONTAINERS"
+    displayName: "Maximum number of docker selenium containers."
+    description: "This is the maximum number of docker selenium containers that can be running at any one time."
+    value: "10"
+    required: false  
+  - name: "MAX_TEST_SESSIONS"
+    displayName: "Max amount of tests executed per container."
+    description: "This is the number of max amount of tests executed per container/pod."
+    value: "4"
     required: false
   - name: "ZALENIUM_KUBERNETES_CPU_REQUEST"
-    displayName: "CPU request for the Selenium Pods."
-    description: "This is the minimum amount of CPU that the container will be configured with."
-    value: "100m"
+    displayName: "CPU request for the Zalenium Hub."
+    description: "This is the minimum amount of CPU that the Zalenium container will be allocated."
+    value: "500m"
     required: true
   - name: "ZALENIUM_KUBERNETES_CPU_LIMIT"
-    displayName: "CPU Limit for the Selenium Pods."
-    description: "This is the maximum amount of CPU that the container will be configured with."
-    value: "200m"
+    displayName: "CPU Limit for the Zalenium Hub."
+    description: "This is the maximum amount of CPU that the Zalenium container will be allowed to use."
+    value: "1000m"
     required: true
   - name: "ZALENIUM_KUBERNETES_MEMORY_REQUEST"
-    displayName: "Memory request for the Selenium Pods."
-    description: "This is the minimum amount of memory that the container will be configured with."
+    displayName: "Memory request for the Zalenium Hub."
+    description: "This is the minimum amount of memory that the Zalenium container will be allocated."
     value: "500Mi"
     required: true
   - name: "ZALENIUM_KUBERNETES_MEMORY_LIMIT"
-    displayName: "Memory limit for the Selenium Pods."
-    description: "This is the maximum amount of memory that the container will be configured with."
-    value: "1Gi"
+    displayName: "Memory limit for the Zalenium Hub."
+    description: "This is the maximum amount of memory that the Zalenium container will be allowed to use, it will be terminated if it exceeds this limit."
+    value: "2Gi"
     required: true
+  - name: "SELENIUM_KUBERNETES_CPU_REQUEST"
+    displayName: "CPU request for the Selenium Pods."
+    description: "This is the minimum amount of CPU that each selenium container will be allocated."
+    value: "250m"
+    required: false
+  - name: "SELENIUM_KUBERNETES_CPU_LIMIT"
+    displayName: "CPU Limit for the Selenium Pods."
+    description: "This is the maximum amount of CPU that each selenium container will be allowed to use."
+    value: "1000m"
+    required: false
+  - name: "SELENIUM_KUBERNETES_MEMORY_REQUEST"
+    displayName: "Memory request for the Selenium Pods."
+    description: "This is the minimum amount of memory that the each selenium container will be allocated."
+    value: "250Mi"
+    required: false
+  - name: "SELENIUM_KUBERNETES_MEMORY_LIMIT"
+    displayName: "Memory limit for the Selenium Pods."
+    description: "This is the maximum amount of memory that the each selenium container will be allowed to use, it will be terminated if it exceeds this limit."
+    value: "2Gi"
+    required: false
   - name: "VOLUME_CAPACITY"
     displayName: "Volume capacity for the disk that contains the test results."
     description: "The volume is used to store all the test results, including logs and video recordings of the tests."
@@ -47,29 +76,45 @@ parameters:
     required: true
   - name: "ZALENIUM_USER"
     displayName: "Basic auth user for Zalenium."
-    description: "This username is used to authenticate towards the Selenium Hub URL."
+    description: "This username is used to authenticate towards the Selenium Hub URL (leave blank if you do not want authentication)."
     value: "zalenium"
-    required: true
+    required: false
   - name: "ZALENIUM_PASSWORD"
     displayName: "Basic auth password for Zalenium."
-    description: "This password is used to authenticate towards the Selenium Hub URL."
+    description: "This password is used to authenticate towards the Selenium Hub URL (leave blank if you do not want authentication)."
     from: '[a-zA-Z0-9]{16}'
     generate: expression
+    required: false
+  - name: "SEND_ANONYMOUS_USAGE_INFO"
+    displayName: "Send anonymous statistics back to Zalando."
+    description: "Set to false if you do not want to send statistics back to Zalando."
+    value: "true"
+    required: false
+  - name: "VIDEO_RECORDING_ENABLED"
+    displayName: "Enable video recording during test runs"
+    description: "Set to false if you do not want video recording during test runs."
+    value: "true"
+    required: false
+  - name: "ZALENIUM_IMAGE_NAME"
+    displayName: "The name of the image used for zalenium hub"
+    value: "dosel/zalenium:latest"
+    required: false
+  - name: "SELENIUM_IMAGE_NAME"
+    displayName: "The name of image for the selenium nodes"
+    value: "elgalu/selenium:latest"
+    required: false
+  - name: PV_ACCESS_MODE
     required: true
-  - name: "SESSION_SECRET"
-    displayName: "The session secret for the OAuth proxy."
-    description: "This is an auto-generated session secret that the OAuth proxy needs."
-    from: '[a-zA-Z0-9]{43}'
-    generate: expression
-    required: true
+    value: ReadWriteMany
+    displayName: Access mode for the persistent Selenium Grid storage
+    description: For Selenium to be able to support parallel intances, this MUST be ReadWriteMany
+labels:
+  app: zalenium
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     generation: 1
-    labels:
-      app: zalenium
-      role: hub
     name: zalenium
   spec:
     replicas: 1
@@ -78,14 +123,9 @@ objects:
       role: hub
     strategy:
       activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
+      recreateParams:
         timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
+      type: Recreate
     template:
       metadata:
         labels:
@@ -94,65 +134,39 @@ objects:
       spec:
         containers:
         - args:
-            - '-provider=openshift'
-            - '-https-address=:8443'
-            - '-http-address='
-            - '-email-domain=*'
-            - '-upstream=http://localhost:4444'
-            - '-client-id=system:serviceaccount:$(CURRENT_NAMESPACE):zalenium'
-            - '-client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token'
-            - '-openshift-sar={"resource": "namespaces", "verb": "get", "resourceName": "$(CURRENT_NAMESPACE)", "namespace": "$(CURRENT_NAMESPACE)"}'
-            - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get", "resourceName": "$(CURRENT_NAMESPACE)", "namespace": "$(CURRENT_NAMESPACE)"}}'
-            - '-cookie-secret-file=/etc/proxy/secrets/session_secret'
-            - '-skip-auth-regex=^/wd'
-            - '-skip-provider-button'
-            - '-openshift-ca=/run/secrets/kubernetes.io/serviceaccount/ca.crt'
-          env:
-          - name: CURRENT_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          image: 'openshift/oauth-proxy:v1.0.0'
-          imagePullPolicy: IfNotPresent
-          name: zalenium-proxy
-          ports:
-            - containerPort: 8080
-              name: web
-              protocol: TCP
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-            - mountPath: /etc/proxy/secrets
-              name: zalenium-proxy-secrets-volume
-        - args:
           - start
-          - --firefoxContainers
-          - ${FIREFOX_CONTAINERS}
-          - --chromeContainers
-          - ${CHROME_CONTAINERS}
-          - --seleniumImageName
-          - "openshift/elgalu_selenium:3.6.0-p3"
-          - --sendAnonymousUsageInfo
-          - "false"
-          - --gridUser
-          - ${ZALENIUM_USER}
-          - --gridPassword
-          - ${ZALENIUM_PASSWORD}
           env:
           - name: ZALENIUM_KUBERNETES_CPU_REQUEST
-            value: ${ZALENIUM_KUBERNETES_CPU_REQUEST}
+            value: ${SELENIUM_KUBERNETES_CPU_REQUEST}
           - name: ZALENIUM_KUBERNETES_CPU_LIMIT
-            value: ${ZALENIUM_KUBERNETES_CPU_LIMIT}
+            value: ${SELENIUM_KUBERNETES_CPU_LIMIT}
           - name: ZALENIUM_KUBERNETES_MEMORY_REQUEST
-            value: ${ZALENIUM_KUBERNETES_MEMORY_REQUEST}
+            value: ${SELENIUM_KUBERNETES_MEMORY_REQUEST}
           - name: ZALENIUM_KUBERNETES_MEMORY_LIMIT
-            value: ${ZALENIUM_KUBERNETES_MEMORY_LIMIT}
-          - name: ZALENIUM_USER
-            value: zalenium
-          - name: ZALENIUM_PASSWORD
-            value: zalenium
-          image: openshift/dosel_zalenium:3.6.0f
+            value: ${SELENIUM_KUBERNETES_MEMORY_LIMIT}
+          - name: GRID_USER
+            valueFrom:
+                secretKeyRef:
+                  key: zalenium-user
+                  name: zalenium
+          - name: GRID_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  key: zalenium-password
+                  name: zalenium
+          - name: DESIRED_CONTAINERS
+            value: ${DESIRED_CONTAINERS}
+          - name: MAX_DOCKER_SELENIUM_CONTAINERS
+            value: ${MAX_DOCKER_SELENIUM_CONTAINERS}
+          - name: MAX_TEST_SESSIONS
+            value: ${MAX_TEST_SESSIONS}
+          - name: SEND_ANONYMOUS_USAGE_INFO
+            value: ${SEND_ANONYMOUS_USAGE_INFO}
+          - name: SELENIUM_IMAGE_NAME
+            value: ${SELENIUM_IMAGE_NAME}
+          - name: VIDEO_RECORDING_ENABLED
+            value: ${VIDEO_RECORDING_ENABLED}
+          image: ${ZALENIUM_IMAGE_NAME}
           imagePullPolicy: IfNotPresent
           name: zalenium
           ports:
@@ -160,11 +174,11 @@ objects:
             protocol: TCP
           resources:
             requests:
-              cpu: '100m'
-              memory: 500Mi
+              cpu: ${ZALENIUM_KUBERNETES_CPU_REQUEST}
+              memory: ${ZALENIUM_KUBERNETES_MEMORY_REQUEST}
             limits:
-              cpu: '200m'
-              memory: 1Gi
+              cpu: ${ZALENIUM_KUBERNETES_CPU_LIMIT}
+              memory: ${ZALENIUM_KUBERNETES_MEMORY_LIMIT}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
@@ -181,14 +195,6 @@ objects:
           - name: zalenium-volume
             persistentVolumeClaim:
               claimName: zalenium-pvc
-          - name: zalenium-proxy-tls
-            secret:
-              defaultMode: 420
-              secretName: zalenium-proxy-tls
-          - name: zalenium-proxy-secrets-volume
-            secret:
-              defaultMode: 420
-              secretName: zalenium-proxy-secret
     test: false
     triggers:
     - type: ConfigChange
@@ -196,13 +202,10 @@ objects:
   kind: Route
   metadata:
     annotations:
-      openshift.io/host.generated: "true"
-      haproxy.router.openshift.io/timeout: "2000s"
+      openshift.io/host.generated: 'true'
+      haproxy.router.openshift.io/timeout: "5m"
     name: zalenium
   spec:
-    tls:
-      termination: Edge
-      insecureEdgeTerminationPolicy: Redirect
     to:
       kind: Service
       name: zalenium
@@ -211,16 +214,15 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    annotations:
-      service.alpha.openshift.io/serving-cert-secret-name: zalenium-proxy-tls
     name: zalenium
   spec:
     ports:
-    - port: 443
+    - port: 4444
       protocol: TCP
-      targetPort: 8443
+      targetPort: 4444
     selector:
       app: zalenium
+      role: hub
     sessionAffinity: None
     type: ClusterIP
   status:
@@ -229,31 +231,16 @@ objects:
   kind: ServiceAccount
   metadata:
     name: zalenium
-    annotations:
-      serviceaccounts.openshift.io/oauth-redirectreference.zalenium: '{"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"zalenium"}}'
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
       name: zalenium-pvc
   spec:
     accessModes:
-    - ReadWriteMany
+    - ${PV_ACCESS_MODE}
     resources:
       requests:
         storage: ${VOLUME_CAPACITY}
-- apiVersion: v1
-  groupNames: null
-  kind: RoleBinding
-  metadata:
-    creationTimestamp: null
-    name: zalenium-rolebinding
-  roleRef:
-    name: zalenium-role
-  subjects:
-  - kind: ServiceAccount
-    name: zalenium
-  userNames:
-  - zalenium
 - apiVersion: v1
   kind: Role
   metadata:
@@ -275,16 +262,6 @@ objects:
     - ""
     attributeRestrictions: null
     resources:
-    - services
-    verbs:
-    - create
-    - delete
-    - get
-    - list
-  - apiGroups:
-    - ""
-    attributeRestrictions: null
-    resources:
     - pods/exec
     verbs:
     - create
@@ -297,8 +274,14 @@ objects:
     zalenium-user: ${ZALENIUM_USER}
     zalenium-password: ${ZALENIUM_PASSWORD}
 - apiVersion: v1
-  kind: Secret
+  groupNames: null
+  kind: RoleBinding
   metadata:
-    name: zalenium-proxy-secret
-  stringData:
-    session_secret: "${SESSION_SECRET}="
+    creationTimestamp: null
+    name: zalenium-role
+  roleRef:
+    name: zalenium-role
+    namespace: ${PROJECT_NAME}
+  subjects:
+  - kind: ServiceAccount
+    name: zalenium
