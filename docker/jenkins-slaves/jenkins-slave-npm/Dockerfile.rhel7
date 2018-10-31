@@ -21,6 +21,7 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
     yum install -y --setopt=tsflags=nodocs \
       --disablerepo=* \
       --enablerepo=rhel-7-server-rpms \
+      --enablerepo=rhel-7-server-rhoar-nodejs-10-rpms \
       --enablerepo=rhel-7-server-optional-rpms \
       $INSTALL_PKGS && \
     yum -y localinstall \
