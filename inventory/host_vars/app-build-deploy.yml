@@ -36,8 +36,8 @@ openshift_cluster_content:
     tags:
     - java-deploy
   - name: amq-dev
-    template: "openshift//amq63-basic"
-    params: "{{ playbook_dir }}/params/amq-broker-basic/deploy_dev"
+    template: "{{ playbook_dir }}/openshift-templates/amq63-basic/template.yml"
+    params: "{{ playbook_dir }}/params/amq63-basic/deploy_dev"
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
@@ -62,8 +62,8 @@ openshift_cluster_content:
     tags:
     - java-deploy
   - name: amq-test
-    template: "openshift//amq63-basic"
-    params: "{{ playbook_dir }}/params/amq-broker-basic/deploy_test"
+    template: "{{ playbook_dir }}/openshift-templates/amq63-basic/template.yml"
+    params: "{{ playbook_dir }}/params/amq63-basic/deploy_test"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy

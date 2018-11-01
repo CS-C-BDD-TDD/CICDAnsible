@@ -51,6 +51,16 @@ objects:
             value: '3306'
           - name: MYSQL_DATABASE
             value: humanreview
+          - name: MQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: MQ_USERNAME
+                name: humanreview-db
+          - name: MQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: MQ_PASSWORD
+                name: humanreview-db
           - name: MYSQL_USER
             valueFrom:
               secretKeyRef:
@@ -147,8 +157,8 @@ objects:
     name: ${NAME}-autoscaler-cpu-mem
   spec:
     scaleTargetRef:
-      apiVersion: apps/v1 
-      kind: ReplicationController 
+      apiVersion: apps/v1
+      kind: ReplicationController
       name: ${NAME}
     minReplicas: ${AUTOSCALE_MIN_REPLICAS}
     maxReplicas: ${AUTOSCALE_MAX_REPLICAS}
@@ -156,11 +166,11 @@ objects:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: ${AUTOSCALE_AVERAGE_CPU_UTILIZATION} 
+        targetAverageUtilization: ${AUTOSCALE_AVERAGE_CPU_UTILIZATION}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION} 
+        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION}
 parameters:
 - name: NAME
   displayName: Name
