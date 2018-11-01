@@ -55,12 +55,12 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: MQ_USERNAME
-                name: humanreview-db
+                name: humanreview-amq
           - name: MQ_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: MQ_PASSWORD
-                name: humanreview-db
+                name: humanreview-amq
           - name: MYSQL_USER
             valueFrom:
               secretKeyRef:
