@@ -54,7 +54,7 @@ objects:
           - name: MQ_BROKER_AMQP
             value: humanreview-amq-amqp
           - name: MQ_PORT_AMQP
-            value: 5672
+            value: '5672'
           - name: MQ_USERNAME
             valueFrom:
               secretKeyRef:
