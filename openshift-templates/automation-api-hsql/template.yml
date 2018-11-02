@@ -51,6 +51,10 @@ objects:
             value: '3306'
           - name: MYSQL_DATABASE
             value: humanreview
+          - name: MQ_BROKER_AMQP
+            value: humanreview-amq-amqp
+          - name: MQ_PORT_AMQP
+            value: 5672
           - name: MQ_USERNAME
             valueFrom:
               secretKeyRef:
