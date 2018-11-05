@@ -34,5 +34,7 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
     rm -rf /var/cache/yum
 
 RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
+ENV PATH=${PATH}:/usr/lib/jvm/jre/bin
+RUN sonar-scanner
 
 USER 1001
