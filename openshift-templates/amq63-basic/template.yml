@@ -101,7 +101,7 @@ objects:
           - name: AMQ_PASSWORD
             value: ${MQ_PASSWORD}
           - name: AMQ_TRANSPORTS
-            value: amqp,openwire
+            value: 'openwire,amqp'
           - name: AMQ_QUEUES
             value: ${MQ_QUEUES}
           - name: AMQ_TOPICS
