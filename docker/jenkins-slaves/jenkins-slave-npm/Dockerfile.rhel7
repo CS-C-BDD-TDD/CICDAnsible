@@ -12,8 +12,9 @@ LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
 
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
-    PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    CHROME_BIN=/bin/google-chrome
+    PATH=/usr/lib/jvm/jre-1.8.0-openjdk/bin:$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
+    CHROME_BIN=/bin/google-chrome \
+    HOME=/home/jenkins
 
 ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
 
@@ -33,10 +34,10 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
     yum clean all -y && \
     rm -rf /var/cache/yum
 
-RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
-
 RUN chown root:root /home/jenkins -R
 
 RUN chmod 770 /home/jenkins -R
 
 USER 1001
+
+RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
