@@ -123,7 +123,6 @@ copy-to-slave:1.4.4
 cucumber-reports:3.20.0
 cvs:2.14
 dashboard-view:2.9.11
-email-ext:2.63
 external-monitor-job:1.7
 gerrit-trigger:2.27.6
 ghprb:1.42.0
