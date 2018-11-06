@@ -36,8 +36,8 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
 
 RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
 
-RUN chown root:root /home/jenkins -R
+RUN chown root:root /home/jenkins /home/jenkins/.npm -R
 
-RUN chmod 770 /home/jenkins -R
+RUN chmod 770 /home/jenkins /home/jenkins/.npm -R 
 
 USER 1001
