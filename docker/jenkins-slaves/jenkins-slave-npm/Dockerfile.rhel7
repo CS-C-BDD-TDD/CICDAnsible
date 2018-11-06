@@ -39,4 +39,8 @@ RUN chown root:root /home/jenkins/.config /home/jenkins/.npm \
     /home/jenkins/.npm-global /home/jenkins/.bash_history \
     /home/jenkins/.pki /home/jenkins -R
 
+RUN chmod 770 /home/jenkins/.config /home/jenkins/.npm \
+    /home/jenkins/.npm-global /home/jenkins/.bash_history \
+    /home/jenkins/.pki /home/jenkins -R
+
 USER 1001
