@@ -12,9 +12,9 @@ LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
 
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
+    HOME=/home/jenkins \
     PATH=/usr/lib/jvm/jre-1.8.0-openjdk/bin:$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    CHROME_BIN=/bin/google-chrome \
-    HOME=/home/jenkins
+    CHROME_BIN=/bin/google-chrome
 
 ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
 
