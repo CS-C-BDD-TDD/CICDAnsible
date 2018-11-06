@@ -33,6 +33,7 @@ display-url-api:2.2.0
 docker-commons:1.13
 docker-workflow:1.17
 durable-task:1.25
+email-ext:2.63
 favorite:2.3.2
 git-client:2.7.3
 git:3.9.1
