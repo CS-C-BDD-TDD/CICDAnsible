@@ -65,6 +65,8 @@ objects:
         containers:
         - capabilities: {}
           env:
+          - name: JAVA_TOOL_OPTIONS
+            value: "-Dmail.smtp.starttls.enable=true"
           - name: OPENSHIFT_ENABLE_OAUTH
             value: ${ENABLE_OAUTH}
           - name: OPENSHIFT_ENABLE_REDIRECT_PROMPT
