@@ -122,3 +122,4 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - hoverfly
+    
