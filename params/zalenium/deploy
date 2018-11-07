@@ -1,0 +1,3 @@
+ZALENIUM_PASSWORD=zalenium1234
+ZALENIUM_USER=zalenium
+PROJECT_NAME=labs-ci-cd

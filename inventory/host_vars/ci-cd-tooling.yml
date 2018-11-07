@@ -82,6 +82,12 @@ openshift_cluster_content:
       - mongodb-slave
 - object: ci-cd-deployments
   content:
+  - name: zalenium
+    template: "{{ playbook_dir }}/openshift-templates/zalenium/template.yml"
+    params: "{{ playbook_dir }}/params/zalenium/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - zalenium
   - name: sonarqube
     template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
     params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
