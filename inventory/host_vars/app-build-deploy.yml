@@ -35,6 +35,12 @@ openshift_cluster_content:
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
+  - name: amq-dev
+    template: "{{ playbook_dir }}/openshift-templates/amq63-basic/template.yml"
+    params: "{{ playbook_dir }}/params/amq63-basic/deploy_dev"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - java-deploy
   - name: fabric8-rolebinding
     template: "{{ playbook_dir }}/openshift-templates/fabric8-role-bindings/template.yml"
     params: "{{ playbook_dir }}/params/human-review-backend/fabric8_dev"
@@ -52,6 +58,12 @@ openshift_cluster_content:
   - name: mysql-test
     template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
+  - name: amq-test
+    template: "{{ playbook_dir }}/openshift-templates/amq63-basic/template.yml"
+    params: "{{ playbook_dir }}/params/amq63-basic/deploy_test"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy

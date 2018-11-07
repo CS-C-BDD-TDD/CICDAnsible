@@ -43,19 +43,56 @@ objects:
       spec:
         containers:
         - env:
-          - name: SPRING_PROFILES_ACTIVE
-            value: hsql
+          - name: SPRING_PROFILE
+            value: prod
+          - name: MYSQL_JDBC_URL
+            value: humanreview-db
+          - name: MYSQL_PORT
+            value: '3306'
+          - name: MYSQL_DATABASE
+            value: humanreview
+          - name: MQ_BROKER_AMQP
+            value: humanreview-amq-amqp
+          - name: MQ_PORT_AMQP
+            value: '5672'
+          - name: MQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: MQ_USERNAME
+                name: humanreview-amq
+          - name: MQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: MQ_PASSWORD
+                name: humanreview-amq
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: humanreview-db
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: humanreview-db
           image: "${NAME}"
           imagePullPolicy: Always
           name: "${NAME}"
           ports:
           - containerPort: 8778
+            name: jolokia
             protocol: TCP
           - containerPort: 8080
             protocol: TCP
           - containerPort: 8443
             protocol: TCP
-          resources: {}
+          resources:
+            limits:
+              cpu: ${APP_CPU_LIMIT}m
+              memory: ${APP_MEM_LIMIT}Mi
+            requests:
+              cpu: ${APP_CPU_REQUEST}m
+              memory: ${APP_CPU_REQUEST}Mi
           terminationMessagePath: "/dev/termination-log"
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -88,10 +125,6 @@ objects:
       port: 8443
       protocol: TCP
       targetPort: 8443
-    - name: 8778-tcp
-      port: 8778
-      protocol: TCP
-      targetPort: 8778
     selector:
       name: "${NAME}"
     sessionAffinity: None
@@ -122,6 +155,26 @@ objects:
     namespace: "${PIPELINES_NAMESPACE}"
   userNames:
   - system:serviceaccount:${PIPELINES_NAMESPACE}:jenkins
+- apiVersion: autoscaling/v2beta1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: ${NAME}-autoscaler-cpu-mem
+  spec:
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: ReplicationController
+      name: ${NAME}
+    minReplicas: ${AUTOSCALE_MIN_REPLICAS}
+    maxReplicas: ${AUTOSCALE_MAX_REPLICAS}
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: ${AUTOSCALE_AVERAGE_CPU_UTILIZATION}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION}
 parameters:
 - name: NAME
   displayName: Name
@@ -131,5 +184,45 @@ parameters:
   displayName: Project/Namespace for Jenkins Pipelines
   description: The project/namespace where the Jenkins executing pipelines is deployed.
   required: true
+- name: APP_CPU_LIMIT
+  displayName: CPU Utilization Limit
+  description: The limit on the amout of CPU (in millicores) that a container instance can use
+  required: true
+  value: '500'
+- name: APP_CPU_REQUEST
+  displayName: CPU Utilization Request
+  description: The minimum amout of CPU (in millicores) that a container instance starts with
+  required: true
+  value: '200'
+- name: APP_MEM_LIMIT
+  displayName: MEM Utilization Limit
+  description: The limit on the amout of MEM (in Mibibytes) that a container instance can use
+  required: true
+  value: '2000'
+- name: APP_MEM_REQUEST
+  displayName: MEM Utilization Request
+  description: The minimum amout of MEM (in Mibibytes) that a container instance starts with
+  required: true
+  value: '1000'
+- name: AUTOSCALE_AVERAGE_CPU_UTILIZATION
+  displayName: CPU Autoscale Limit
+  description: If a container reaches this average CPU utilization, it will trigger autoscale up to the max number of instances
+  required: true
+  value: '100'
+- name: AUTOSCALE_AVERAGE_MEM_UTILIZATION
+  displayName: Memory Autoscale Limit
+  description: If a container reaches this average memory utilization, it will trigger autoscale up to the max number of instances
+  required: true
+  value: '100'
+- name: AUTOSCALE_MIN_REPLICAS
+  displayName: Minimum Replicas
+  description: The minimum number of replicas for this application
+  required: true
+  value: '1'
+- name: AUTOSCALE_MAX_REPLICAS
+  displayName: Maximum Replicas
+  description: The maximum number of replicas that the autoscaler can create
+  required: true
+  value: '1'
 labels:
   template: http-app-deploy-template

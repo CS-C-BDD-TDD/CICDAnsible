@@ -37,7 +37,9 @@ objects:
         uri: "${SOURCE_REPOSITORY_URL}"
       type: Git
     strategy:
-      type: Docker
+      dockerStrategy:
+        dockerfilePath: "${DOCKER_FILE_PATH}"
+    type: Docker
     triggers:
     - github:
         secret: "${GITHUB_WEBHOOK_SECRET}"
@@ -67,3 +69,8 @@ parameters:
   displayName: Git Context Directory
   description: Set this to the directory where the build information is (e.g. Dockerfile)
     if not using the root directory
+- name: DOCKER_FILE_PATH
+  displayName: Override the default Dockerfile name/path
+  description: By default, the build will use the file Dockerfile in the root of the project, this option allows you to Override
+  required: true
+  value: Dockerfile

@@ -1,0 +1,4 @@
+APPLICATION_NAME=humanreview
+MQ_QUEUES=inbound.stix,outbound.stix
+MQ_USERNAME=user
+MQ_PASSWORD=Mprd2bnAMrcan!

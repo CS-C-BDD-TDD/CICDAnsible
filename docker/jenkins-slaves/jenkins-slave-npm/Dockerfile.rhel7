@@ -1,0 +1,38 @@
+#invoke npm in jenkinsfile: sh "scl enable rh-nodejs8 'npm run build'"
+FROM openshift3/jenkins-slave-base-rhel7:v3.9
+
+LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
+      name="openshift3/jenkins-slave-nodejs-rhel7" \
+      version="3.9" \
+      architecture="x86_64" \
+      release="1" \
+      io.k8s.display-name="Jenkins Slave Nodejs" \
+      io.k8s.description="The jenkins slave arachni image has the nodejs tools on top of the jenkins slave base image." \
+      io.openshift.tags="openshift,jenkins,slave,nodejs"
+
+ENV NODEJS_VERSION=10 \
+    NPM_CONFIG_PREFIX=$HOME/.npm-global \
+    PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
+    CHROME_BIN=/bin/google-chrome
+
+ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
+
+RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg-utils liberation-fonts" && \
+    yum install -y --setopt=tsflags=nodocs \
+      --disablerepo=* \
+      --enablerepo=rhel-7-server-rpms \
+      --enablerepo=rhel-7-server-rhoar-nodejs-10-rpms \
+      --enablerepo=rhel-7-server-optional-rpms \
+      $INSTALL_PKGS && \
+    yum -y localinstall \
+      --disablerepo=* \
+      --enablerepo=rhel-7-server-rpms \
+      google-chrome-stable_current_x86_64.rpm && \
+    rm google-chrome-stable_current_x86_64.rpm && \
+    rpm -V $INSTALL_PKGS google-chrome-stable && \
+    yum clean all -y && \
+    rm -rf /var/cache/yum
+
+RUN npm install --unsafe-perm -g npm-audit-html npm-audit-ci-wrapper sonar-scanner
+
+USER 1001
