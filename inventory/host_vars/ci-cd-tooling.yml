@@ -24,6 +24,12 @@ openshift_cluster_content:
     - nexus
     post_steps:
     - role: "CICDAnsible/roles/configure-nexus"
+  - name: jenkins-persistent
+    template: "{{ playbook_dir }}/openshift-templates/jenkins/jenkins-persistent-template.yml"
+    params: "{{ playbook_dir }}/params/jenkins/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - jenkins
 - object: ci-cd-builds
   content:
   - name: jenkins-s2i
@@ -110,12 +116,6 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - zalenium
-  - name: jenkins-persistent
-    template: "{{ playbook_dir }}/openshift-templates/jenkins/jenkins-persistent-template.yml"
-    params: "{{ playbook_dir }}/params/jenkins/deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - jenkins
   - name: hoverfly
     template: "{{ playbook_dir }}/openshift-templates/hoverfly/template.yml"
     params: "{{ playbook_dir }}/params/hoverfly/deploy"
