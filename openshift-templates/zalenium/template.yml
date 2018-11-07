@@ -11,7 +11,7 @@ message: |-
          Username: ${ZALENIUM_USER}
          Password: ${ZALENIUM_PASSWORD}
 parameters:
-  - name: "PROJECT_NAME"
+  - name: "NAMESPACE"
     displayName: "The name of the project/namespace that zalenium is being deployed to"
     required: true
   - name: "DESIRED_CONTAINERS"
@@ -276,7 +276,7 @@ objects:
     name: zalenium-role
   roleRef:
     name: zalenium-role
-    namespace: ${PROJECT_NAME}
+    namespace: ${NAMESPACE}
   subjects:
   - kind: ServiceAccount
     name: zalenium
