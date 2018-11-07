@@ -16,8 +16,6 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - sonar
-    post_steps:
-    - role: "CICDAnsible/roles/sonarqube
   - name: nexus
     template: "{{ playbook_dir }}/openshift-templates/nexus/template.yml"
     params: "{{ playbook_dir }}/params/nexus/deploy"
