@@ -4,12 +4,6 @@ openshift_cluster_content:
 - galaxy_requirements: "{{ playbook_dir }}/galaxy_requirements.yml"
 - object: ci-cd-deployments
   content:
-  - name: sonarqube
-    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
-    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - sonar
   - name: sonarqube-postgresql
     template: "openshift//postgresql-persistent"
     params: "{{ playbook_dir }}/params/sonarqube/postgresql"
@@ -24,6 +18,12 @@ openshift_cluster_content:
     - nexus
     post_steps:
     - role: "CICDAnsible/roles/configure-nexus"
+  - name: sonarqube
+    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
+    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - sonar
   - name: jenkins-persistent
     template: "{{ playbook_dir }}/openshift-templates/jenkins/jenkins-persistent-template.yml"
     params: "{{ playbook_dir }}/params/jenkins/deploy"
