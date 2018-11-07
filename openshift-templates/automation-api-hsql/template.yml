@@ -55,6 +55,10 @@ objects:
             value: humanreview-amq-amqp
           - name: MQ_PORT_AMQP
             value: '5672'
+          - name: MQ_BROKER_TCP
+            value: humanreview-amq-tcp
+          - name: MQ_PORT_TCP
+            value: '61616'
           - name: MQ_USERNAME
             valueFrom:
               secretKeyRef:

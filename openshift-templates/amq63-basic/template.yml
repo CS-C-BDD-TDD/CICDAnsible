@@ -32,7 +32,7 @@ objects:
     annotations:
       description: The broker's AMQP port.
     labels:
-      application: ${APPLICATION_NAME}
+      app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-amq-amqp
   spec:
     ports:
@@ -44,10 +44,27 @@ objects:
   kind: Service
   metadata:
     annotations:
+      description: The broker's OpenWire port.
+      service.alpha.openshift.io/dependencies: '[{"name": "${APPLICATION_NAME}-amq-amqp",
+        "kind": "Service"},{"name": "${APPLICATION_NAME}-amq-mqtt", "kind": "Service"},{"name":
+        "${APPLICATION_NAME}-amq-stomp", "kind": "Service"}]'
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-amq-tcp
+  spec:
+    ports:
+    - port: 61616
+      targetPort: 61616
+    selector:
+      deploymentConfig: ${APPLICATION_NAME}-amq
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
       description: Supports node discovery for mesh formation.
       service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
     labels:
-      application: ${APPLICATION_NAME}
+      app: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}-amq-mesh
   spec:
     clusterIP: None
@@ -73,7 +90,7 @@ objects:
     template:
       metadata:
         labels:
-          application: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
           deploymentConfig: ${APPLICATION_NAME}-amq
         name: ${APPLICATION_NAME}-amq
       spec:
@@ -84,7 +101,7 @@ objects:
           - name: AMQ_PASSWORD
             value: ${MQ_PASSWORD}
           - name: AMQ_TRANSPORTS
-            value: amqp
+            value: 'openwire,amqp'
           - name: AMQ_QUEUES
             value: ${MQ_QUEUES}
           - name: AMQ_TOPICS
