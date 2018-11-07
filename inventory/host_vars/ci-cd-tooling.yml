@@ -2,6 +2,28 @@
 ansible_connection: local
 openshift_cluster_content:
 - galaxy_requirements: "{{ playbook_dir }}/galaxy_requirements.yml"
+- object: ci-cd-deployments
+  content:
+  - name: sonarqube
+    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
+    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - sonar
+  - name: sonarqube-postgresql
+    template: "openshift//postgresql-persistent"
+    params: "{{ playbook_dir }}/params/sonarqube/postgresql"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - sonar
+  - name: nexus
+    template: "{{ playbook_dir }}/openshift-templates/nexus/template.yml"
+    params: "{{ playbook_dir }}/params/nexus/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - nexus
+    post_steps:
+    - role: "CICDAnsible/roles/configure-nexus"
 - object: ci-cd-builds
   content:
   - name: jenkins-s2i
@@ -88,26 +110,6 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - zalenium
-  - name: sonarqube
-    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
-    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - sonar
-  - name: sonarqube-postgresql
-    template: "openshift//postgresql-persistent"
-    params: "{{ playbook_dir }}/params/sonarqube/postgresql"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - sonar
-  - name: nexus
-    template: "{{ playbook_dir }}/openshift-templates/nexus/template.yml"
-    params: "{{ playbook_dir }}/params/nexus/deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - nexus
-    post_steps:
-    - role: "CICDAnsible/roles/configure-nexus"
   - name: jenkins-persistent
     template: "{{ playbook_dir }}/openshift-templates/jenkins/jenkins-persistent-template.yml"
     params: "{{ playbook_dir }}/params/jenkins/deploy"
