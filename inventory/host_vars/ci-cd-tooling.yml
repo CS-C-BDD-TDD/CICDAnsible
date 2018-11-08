@@ -2,6 +2,20 @@
 ansible_connection: local
 openshift_cluster_content:
 - galaxy_requirements: "{{ playbook_dir }}/galaxy_requirements.yml"
+- object: ci-cd-deployments
+  content:
+  - name: sonarqube
+    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
+    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - sonar
+  - name: sonarqube-postgresql
+    template: "openshift//postgresql-persistent"
+    params: "{{ playbook_dir }}/params/sonarqube/postgresql"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - sonar
 - object: ci-cd-builds
   content:
   - name: jenkins-s2i
@@ -82,24 +96,6 @@ openshift_cluster_content:
       - mongodb-slave
 - object: ci-cd-deployments
   content:
-  - name: zalenium
-    template: "{{ playbook_dir }}/openshift-templates/zalenium/template.yml"
-    params: "{{ playbook_dir }}/params/zalenium/deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - zalenium
-  - name: sonarqube
-    template: "{{ playbook_dir }}/openshift-templates/sonarqube/template.yml"
-    params: "{{ playbook_dir }}/params/sonarqube/build-and-deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - sonar
-  - name: sonarqube-postgresql
-    template: "openshift//postgresql-persistent"
-    params: "{{ playbook_dir }}/params/sonarqube/postgresql"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - sonar
   - name: nexus
     template: "{{ playbook_dir }}/openshift-templates/nexus/template.yml"
     params: "{{ playbook_dir }}/params/nexus/deploy"
@@ -114,9 +110,16 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - jenkins
+  - name: zalenium
+    template: "{{ playbook_dir }}/openshift-templates/zalenium/template.yml"
+    params: "{{ playbook_dir }}/params/zalenium/deploy"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - zalenium
   - name: hoverfly
     template: "{{ playbook_dir }}/openshift-templates/hoverfly/template.yml"
     params: "{{ playbook_dir }}/params/hoverfly/deploy"
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - hoverfly
+    
