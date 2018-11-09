@@ -45,7 +45,7 @@ objects:
         - env:
           - name: SPRING_PROFILE
             value: prod
-          - name: MYSQL_JDBC_URL
+          - name: MYSQL_HOST
             value: humanreview-db
           - name: MYSQL_PORT
             value: '3306'
