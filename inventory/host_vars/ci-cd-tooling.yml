@@ -53,7 +53,7 @@ openshift_cluster_content:
     - jenkins-slaves
     - npm-slave
   - name: jenkins-slave-zap
-    template: "https://raw.githubusercontent.com/redhat-cop/containers-quickstarts/v1.1/jenkins-slaves/templates/jenkins-slave-generic-template.yml"
+    template: "{{ playbook_dir }}/openshift-templates/docker-build/template.yml"
     params: "{{ playbook_dir }}/params/jenkins-slaves/zap"
     namespace: "{{ ci_cd_namespace }}"
     tags:
