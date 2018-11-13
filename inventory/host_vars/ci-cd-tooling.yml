@@ -30,12 +30,6 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
       - tool-box
-  - name: hoverfly
-    template: "{{ playbook_dir }}/openshift-templates/docker-build/template.yml"
-    params: "{{ playbook_dir }}/params/hoverfly/build"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-      - hoverfly
 - object: jenkins-slave-nodes
   content:
   - name: jenkins-slave-mvn
@@ -116,10 +110,4 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - zalenium
-  - name: hoverfly
-    template: "{{ playbook_dir }}/openshift-templates/hoverfly/template.yml"
-    params: "{{ playbook_dir }}/params/hoverfly/deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - hoverfly
     
