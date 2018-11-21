@@ -40,11 +40,11 @@ openshift_cluster_content:
     - selenium
     - selenium-node-firefox
     post_steps:
-      - role: "CICDAnsible/roles/openshift-label-by-expression"
-        vars:
-          target_namespace: "{{ ci_cd_namespace }}"
-          label: "app=selenium"
-          name_pattern: ".*selenium.*"
+    - role: "CICDAnsible/roles/openshift-label-by-expression"
+      vars:
+        target_namespace: labs-ci-cddeven
+        name_pattern: ".*selenium.*"
+        label: 'app=selenium'
 # - object: ci-cd-templates
 #   content:
 #   - name: jenkins-buildconfig-template
