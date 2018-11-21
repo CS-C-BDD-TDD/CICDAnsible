@@ -1,0 +1,21 @@
+---
+- name: "Find all objects in namespace '{{ target_namespace }}'"
+  command: >
+    oc get all --no-headers --output="name" --namespace="{{ target_namespace }}"
+  when:
+  - target_namespace is defined
+  - target_namespace|trim != ''
+  - name_pattern is defined
+  - name_pattern|trim != ''
+  register: ocp_objects
+- name: "Apply label"
+  command: >
+    oc label --overwrite --namespace={{ target_namespace }} {{ item }} {{ label }}
+  with_items: "{{ ocp_objects.stdout_lines }}"
+  when:
+  - target_namespace is defined
+  - target_namespace|trim != ''   ## target_namespace IS REQUIRED
+  - name_pattern is defined
+  - name_pattern|trim != ''       ## name_pattern IS REQUIRED
+  - item is search(name_pattern)  ## Only apply labels to objects matching this expression
+  - not(item is match('pods/*'))  ## Cannot apply labels to pods, so filter those out

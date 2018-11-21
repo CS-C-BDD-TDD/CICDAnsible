@@ -2,6 +2,49 @@
 ansible_connection: local
 openshift_cluster_content:
 - galaxy_requirements: "{{ playbook_dir }}/galaxy_requirements.yml"
+- object: selenium-grid
+  content:
+  - name: selenium-hub
+    template: "https://raw.githubusercontent.com/ddavison/selenium-openshift-templates/3c326d918b48d2e2181987d85a9cd3905d3a4174/selenium-hub.yaml"
+    namespace: "{{ ci_cd_namespace }}"
+    params: "{{ playbook_dir }}/params/selenium/deploy_hub"
+    tags:
+    - selenium
+    - selenium-hub
+  - name: selenium-node-chrome-debug
+    template: "https://raw.githubusercontent.com/ddavison/selenium-openshift-templates/3c326d918b48d2e2181987d85a9cd3905d3a4174/selenium-node-chrome-debug.yaml"
+    namespace: "{{ ci_cd_namespace }}"
+    params: "{{ playbook_dir }}/params/selenium/build_chrome"
+    tags:
+    - selenium
+    - selenium-node-chrome-debug
+  - name: selenium-node-chrome
+    template: "https://raw.githubusercontent.com/ddavison/selenium-openshift-templates/3c326d918b48d2e2181987d85a9cd3905d3a4174/selenium-node-chrome.yaml"
+    namespace: "{{ ci_cd_namespace }}"
+    params: "{{ playbook_dir }}/params/selenium/build_chrome"
+    tags:
+    - selenium
+    - selenium-node-chrome
+  - name: selenium-node-firefox-debug
+    template: "https://raw.githubusercontent.com/ddavison/selenium-openshift-templates/3c326d918b48d2e2181987d85a9cd3905d3a4174/selenium-node-firefox-debug.yaml"
+    namespace: "{{ ci_cd_namespace }}"
+    params: "{{ playbook_dir }}/params/selenium/build_firefox"
+    tags:
+    - selenium
+    - selenium-node-firefox-debug
+  - name: selenium-node-firefox
+    template: "https://raw.githubusercontent.com/ddavison/selenium-openshift-templates/3c326d918b48d2e2181987d85a9cd3905d3a4174/selenium-node-firefox.yaml"
+    namespace: "{{ ci_cd_namespace }}"
+    params: "{{ playbook_dir }}/params/selenium/build_firefox"
+    tags:
+    - selenium
+    - selenium-node-firefox
+    post_steps:
+      - role: openshift-label-by-expression
+        vars:
+          target_namespace: "{{ ci_cd_namespace }}"
+          label: "app=selenium"
+          name_pattern: ".*selenium.*"
 - object: ci-cd-templates
   content:
   - name: jenkins-buildconfig-template
