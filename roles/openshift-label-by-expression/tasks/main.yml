@@ -8,17 +8,6 @@
   - name_pattern is defined
   - name_pattern|trim != ''
   register: ocp_objects
-- name: "Debug 1"
-  debug:
-    var: item
-  with_items: "{{ ocp_objects.stdout_lines }}"
-  when:
-  - target_namespace is defined
-  - target_namespace|trim != ''   ## target_namespace IS REQUIRED
-  - name_pattern is defined
-  - name_pattern|trim != ''       ## name_pattern IS REQUIRED
-  - item is search(name_pattern)  ## Only apply labels to objects matching this expression
-  - not(item is match('pods/*'))  ## Cannot apply labels to pods, so filter those out
 - name: "Apply label"
   command: >
     oc label --overwrite --namespace={{ target_namespace }} {{ item }} {{ label }}
