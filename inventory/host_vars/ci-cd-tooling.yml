@@ -40,7 +40,7 @@ openshift_cluster_content:
     - selenium
     - selenium-node-firefox
     post_steps:
-      - role: openshift-label-by-expression
+      - role: "CICDAnsible/roles/openshift-label-by-expression"
         vars:
           target_namespace: "{{ ci_cd_namespace }}"
           label: "app=selenium"
