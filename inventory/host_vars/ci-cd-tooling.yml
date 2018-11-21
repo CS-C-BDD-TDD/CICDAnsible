@@ -2,6 +2,14 @@
 ansible_connection: local
 openshift_cluster_content:
 - galaxy_requirements: "{{ playbook_dir }}/galaxy_requirements.yml"
+- object: ci-cd-templates
+  content:
+  - name: jenkins-buildconfig-template
+    file: "{{ playbook_dir }}/openshift-templates/jenkins-pipeline-no-ocp-triggers/template.yml"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - jenkins
+    - pipeline
 - object: ci-cd-deployments
   content:
   - name: sonarqube
@@ -104,10 +112,4 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - jenkins
-  - name: zalenium
-    template: "{{ playbook_dir }}/openshift-templates/zalenium/template.yml"
-    params: "{{ playbook_dir }}/params/zalenium/deploy"
-    namespace: "{{ ci_cd_namespace }}"
-    tags:
-    - zalenium
     
