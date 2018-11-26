@@ -1,5 +1,6 @@
 openshift-applier
 roles/*
+!roles/openshift-label-by-expression
 !roles/configure-nexus
 *.pyc
 .idea
