@@ -42,7 +42,7 @@ openshift_cluster_content:
     post_steps:
     - role: "CICDAnsible/roles/openshift-label-by-expression"
       vars:
-        namespace: "{{ ci_cd_namespace }}{{ project_name_postfix }}"
+        namespace: "{{ ci_cd_namespace }}{{ project_name_postfix | default('') }}"
         name_pattern: ".*selenium.*"
         label: 'app=selenium'
 # - object: ci-cd-templates
