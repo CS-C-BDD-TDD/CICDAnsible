@@ -22,4 +22,6 @@ RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersio
     tar --strip-components=1 -xzf zap.tar.gz && \
     rm -f zap.tar.gz
 
+ENTRYPOINT [ "run-jnlp-client" ]
+
 USER 1001
