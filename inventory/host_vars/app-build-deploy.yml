@@ -21,6 +21,22 @@ openshift_cluster_content:
     namespace: "{{ ci_cd_namespace }}"
     tags:
     - vue-build
+  - name: build-config-map
+    template: "{{ playbook_dir }}/openshift-templates/build-config-map/template.yml"
+    params: "{{ playbook_dir }}/params/build-config-map/deploy-test"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - build-config-map
+    - build
+    - configmap
+  - name: human-review-ui-tests
+    template: "{{ playbook_dir }}/openshift-templates/jenkins-pipeline-no-ocp-triggers/template.yml"
+    params: "{{ playbook_dir }}/params/human-review-ui-tests/build"
+    namespace: "{{ ci_cd_namespace }}"
+    tags:
+    - selenium
+    - serenity
+    - human-review
 - object: dev-stage
   content:
   - name: java-app
@@ -60,7 +76,7 @@ openshift_cluster_content:
     tags:
     - vue-deploy
 - object: test-stage
-  content:
+  content:  
   - name: mysql-test
     template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
