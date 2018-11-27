@@ -1,0 +1,5 @@
+FRONTEND_URL=http://vue-app-labs-test.apps.domino.rht-labs.com/
+PARTNER_URL=http://hr-partner-labs-test.apps.domino.rht-labs.com/api/v1
+REGULAR_USER=Pass1
+REGULAR_PASS=User1
+REST_URL=http://human-review-backend-labs-test.apps.domino.rht-labs.com/api/v1

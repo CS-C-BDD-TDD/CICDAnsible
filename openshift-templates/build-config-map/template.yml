@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: "build-config-map"
+objects:
+- apiVersion: v1
+  data:
+    frontend_url: ${FRONTEND_URL}
+    partner_api_url: ${PARTNER_URL}
+    regular_password: ${REGULAR_USER}
+    regular_username: ${REGULAR_PASS}
+    rest_api_url: ${REST_URL}
+  kind: ConfigMap
+  metadata:
+    labels:
+      app: human-review
+      name: build-config
+    name: build-config
+parameters:
+- name: FRONTEND_URL
+  description: The URL for the Vue.js frontend application
+  displayName: Vue.js Frontend URL
+  required: true
+- name: PARTNER_URL
+  description: The URL for the AM-Q injection service
+  displayName: AM-Q Injection Service URL
+  required: true
+- name: REGULAR_USER
+  description: The username for simulating a valid login
+  displayName: Web application username
+  required: true
+- name: REGULAR_PASS
+  description: The password for simulating a valid login
+  displayName: Web application password
+  required: true
+- name: REST_URL
+  description: The URL for the SpringBoot backend application
+  displayName: SpringBoot Backend API URL
+  required: true
