@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7:v3.10
 
 LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
-      name="openshift3/jenkins-slave-nodejs-rhel7" \
+      name="openshift3/jenkins-slave-zap-rhel7" \
       version="3.10" \
       architecture="x86_64" \
       release="1" \
