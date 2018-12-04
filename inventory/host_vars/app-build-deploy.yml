@@ -57,6 +57,12 @@ openshift_cluster_content:
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
+  - name: mysql-dev-login
+    template: "openshift//mysql-persistent"
+    params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev_login"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - java-deploy
   - name: amq-dev
     template: "{{ playbook_dir }}/openshift-templates/amq63-basic/template.yml"
     params: "{{ playbook_dir }}/params/amq63-basic/deploy_dev"
@@ -80,6 +86,12 @@ openshift_cluster_content:
   - name: mysql-test
     template: "openshift//mysql-persistent"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
+  - name: mysql-test-login
+    template: "openshift//mysql-persistent"
+    params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test_login"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy
