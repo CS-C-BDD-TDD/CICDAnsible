@@ -42,14 +42,20 @@ objects:
           name: "${NAME}"
       spec:
         containers:
-        - env:
+        - env:          
           - name: SPRING_PROFILE
             value: prod
+          - name: LOGIN_DATABASE
+            value: humanreview-db-login
+          - name: LOGIN_HOST
+            value: humanreview-db-login
           - name: MYSQL_HOST
             value: humanreview-db
           - name: MYSQL_PORT
             value: '3306'
           - name: MYSQL_DATABASE
+            value: humanreview
+          - name: HUMANREVIEW_DATABASE
             value: humanreview
           - name: MQ_BROKER_AMQP
             value: humanreview-amq-amqp
