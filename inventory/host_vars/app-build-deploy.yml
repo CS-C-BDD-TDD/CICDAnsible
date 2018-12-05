@@ -52,13 +52,13 @@ openshift_cluster_content:
     tags:
     - vue-deploy
   - name: mysql-dev
-    template: "openshift//mysql-persistent"
+    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev"
     namespace: "{{ dev_namespace }}"
     tags:
     - java-deploy
   - name: mysql-dev-login
-    template: "openshift//mysql-persistent"
+    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_dev_login"
     namespace: "{{ dev_namespace }}"
     tags:
@@ -84,13 +84,13 @@ openshift_cluster_content:
 - object: test-stage
   content:  
   - name: mysql-test
-    template: "openshift//mysql-persistent"
+    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test"
     namespace: "{{ test_namespace }}"
     tags:
     - java-deploy
   - name: mysql-test-login
-    template: "openshift//mysql-persistent"
+    template: "{{ playbook_dir }}/openshift-templates/mysql-persistent/template.yml"
     params: "{{ playbook_dir }}/params/mysql-persistent/deploy_test_login"
     namespace: "{{ test_namespace }}"
     tags:
