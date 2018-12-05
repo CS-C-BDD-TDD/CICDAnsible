@@ -53,6 +53,8 @@ objects:
             value: humanreview-db
           - name: MYSQL_PORT
             value: '3306'
+          - name: MYSQL_DATABASE
+            value: humanreview
           - name: HUMANREVIEW_DATABASE
             value: humanreview
           - name: MQ_BROKER_AMQP
