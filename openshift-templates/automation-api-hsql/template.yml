@@ -174,17 +174,17 @@ objects:
       apiVersion: apps/v1
       kind: ReplicationController
       name: ${NAME}
-    minReplicas: ${AUTOSCALE_MIN_REPLICAS}
-    maxReplicas: ${AUTOSCALE_MAX_REPLICAS}
+    minReplicas: ${{AUTOSCALE_MIN_REPLICAS}}
+    maxReplicas: ${{AUTOSCALE_MAX_REPLICAS}}
     metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: ${AUTOSCALE_AVERAGE_CPU_UTILIZATION}
+        targetAverageUtilization: ${{AUTOSCALE_AVERAGE_CPU_UTILIZATION}}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: ${AUTOSCALE_AVERAGE_MEM_UTILIZATION}
+        targetAverageUtilization: ${{AUTOSCALE_AVERAGE_MEM_UTILIZATION}}
 parameters:
 - name: NAME
   displayName: Name
