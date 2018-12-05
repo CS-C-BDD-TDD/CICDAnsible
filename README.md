@@ -4,7 +4,7 @@
 
 This project is an Ansible inventory for loading an OpenShift cluster with some frequently used projects, apps and tools on a Red Hat Open Innovation Lab residencies. Using the `openshift-applier`, cluster content is loaded from templates and param files in a repeatable, config-as-code way.
 
- Running this Ansible inventory will first create three project namespaces: `labs-ci-cd`, `labs-dev` and `labs-test`. Subsequently it will create a bunch of commonly used `ci-cd-tools` such as Jenkins, Nexus and Sonar. It will also create a collection of `jenkins-slaves` that can be used in builds such as `npm`, `maven` and `golang` to name a few. Apps can be added also by applying their `Jenkinsfile` as a buildConfig with an example (java-app) is included as a reference.
+ Running this Ansible inventory will first create three project namespaces: `yellowdog`, `yellowdog-demo` and `yellowdog-test`. Subsequently it will create a bunch of commonly used `ci-cd-tools` such as Jenkins, Nexus and Sonar. It will also create a collection of `jenkins-slaves` that can be used in builds such as `npm`, `maven` and `golang` to name a few. Apps can be added also by applying their `Jenkinsfile` as a buildConfig with an example (java-app) is included as a reference.
 
  The diagaram below shows the components that get created by running the playbook's `bootstrap` and `tools` inventories.
 ![whats-in-the-box.png](whats-in-the-box.png)
@@ -64,7 +64,7 @@ There are two ways to use Labs CI/CD. The preferred approach is to run the playb
 
 1. Log on to an OpenShift server `oc login -u <user> https://<server>:<port>/`
 2. Clone this repository.
-3. If `labs-ci-cd` doesn't yet exist on your OpenShift cluster, just run the default `run.sh` script:
+3. If `yellowdog` doesn't yet exist on your OpenShift cluster, just run the default `run.sh` script:
 ```bash
 ./run.sh
 ```
@@ -93,7 +93,7 @@ ansible-galaxy install -r requirements.yml --roles-path=roles
 ```bash
 ansible-playbook apply.yml -i inventory/ -e target=bootstrap
 ```
-5. If `labs-ci-cd` tooling such as Jenkins or SonarQube do not yet exist on your OpenShift cluster, run the `tools` inventory. This will apply all the `ci-cd-tooling` content from `host_vars`:
+5. If `yellowdog` tooling such as Jenkins or SonarQube do not yet exist on your OpenShift cluster, run the `tools` inventory. This will apply all the `ci-cd-tooling` content from `host_vars`:
 ```bash
 ansible-playbook apply.yml -i inventory/ -e target=tools
 ```
@@ -104,7 +104,7 @@ ansible-playbook apply.yml -i inventory/ -e target=apps
 
 ## Customised Install
 
-If `labs-ci-cd` already exists on your OpenShift cluster and you want to create a new instance of `labs-ci-cd` with its own name eg `john-ci-cd`, run the "unique projects" playbook. This playbook is useful if you're developing labs-ci-cd and want to test your changes. With a unique project name, you can safely try out your changes in a test cluster that others are using.
+If `yellowdog` already exists on your OpenShift cluster and you want to create a new instance of `yellowdog` with its own name eg `john-ci-cd`, run the "unique projects" playbook. This playbook is useful if you're developing yellowdog and want to test your changes. With a unique project name, you can safely try out your changes in a test cluster that others are using.
 
 ```bash
 ansible-playbook unique-projects-playbook.yml -i inventory/ \
@@ -122,7 +122,7 @@ Or if running with Docker it's
 
 Where available `target` include:
   - `bootstrap` - Creates the projects inside of the cluster
-  - `tools` - Deploys the CI/CD tools into the `labs-ci-cd-<postfix>` project
+  - `tools` - Deploys the CI/CD tools into the `yellowdog-<postfix>` project
   - `apps` - Deploys the example applications and their associated CI/CD pipelines
 
 Note:
@@ -163,7 +163,7 @@ A few additional guiding principles:
 
 * This repository is built to ensure all the individual components are integrated and can be deployed together.
 * It is likely that your residency will need to remove some components in this inventory and then add others. Thus, every residency team is encouraged to create a fork of this repo and modify to their needs. A few things to consider for your fork:
-  - If possible, remove local templates and update your inventory to point to the templates in a tag of labs-ci-cd. This encourages reuse, as well as contributions back to the upstream effort.
+  - If possible, remove local templates and update your inventory to point to the templates in a tag of yellowdog. This encourages reuse, as well as contributions back to the upstream effort.
   - If you build new, reusable features in your fork, contribute them back!
 * Generally speaking, there should only be one tool per functional use case e.g. Sonatype Nexus is the artifact repository so we will not support JFrog Artifactory
 

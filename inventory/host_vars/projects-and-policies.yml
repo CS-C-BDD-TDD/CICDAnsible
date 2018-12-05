@@ -29,13 +29,13 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/rolebinding-group/all"
     tags:
     - rolebinding-group
-  - name: "labs-dev-acl"
+  - name: "yellowdog-demo-acl"
     namespace: "{{ dev_namespace }}"
     template: "{{ playbook_dir }}/openshift-templates/rolebinding-group/template.yml"
     params: "{{ playbook_dir }}/params/rolebinding-group/all"
     tags:
     - rolebinding-group
-  - name: "labs-dev-acl"
+  - name: "yellowdog-demo-acl"
     namespace: "{{ test_namespace }}"
     template: "{{ playbook_dir }}/openshift-templates/rolebinding-group/template.yml"
     params: "{{ playbook_dir }}/params/rolebinding-group/all"
