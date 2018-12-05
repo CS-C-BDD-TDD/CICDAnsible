@@ -46,9 +46,9 @@ objects:
           - name: SPRING_PROFILE
             value: prod
           - name: LOGIN_DATABASE
-            value: humanreview-db
+            value: humanreview-db-login
           - name: LOGIN_HOST
-            value: humanreview-db
+            value: humanreview-db-login
           - name: MYSQL_HOST
             value: humanreview-db
           - name: MYSQL_PORT
