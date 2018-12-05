@@ -1,5 +1,6 @@
-FRONTEND_URL=http://vue-app-labs-test.apps.domino.rht-labs.com/
-PARTNER_URL=http://hr-partner-labs-test.apps.domino.rht-labs.com/api/v1
+FRONTEND_URL=http://vue-app-labs-test.apps.mgt.devsecops.gov/
+PARTNER_URL=http://hr-partner-labs-test.apps.mgt.devsecops.gov/api/v1
 REGULAR_USER=Pass1
 REGULAR_PASS=User1
-REST_URL=http://human-review-backend-labs-test.apps.domino.rht-labs.com/api/v1
+REST_URL=http://human-review-backend-labs-test.apps.mgt.devsecops.gov/api/v1
+SELENIUM_HUB=http://selenium-hub.selenium.svc:4444/`
