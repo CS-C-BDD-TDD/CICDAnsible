@@ -115,10 +115,15 @@ objects:
           volumeMounts:
           - mountPath: /var/lib/mysql/data
             name: ${DATABASE_SERVICE_NAME}-data
+          - mountPath: /usr/share/container-scripts/mysql
+            name: ${MYSQL_INIT_CONFIGMAP}-volume
         volumes:
         - name: ${DATABASE_SERVICE_NAME}-data
           persistentVolumeClaim:
             claimName: ${DATABASE_SERVICE_NAME}
+        - name: ${MYSQL_INIT_CONFIGMAP}-volume
+          configMap:
+            name: ${MYSQL_INIT_CONFIGMAP}
     triggers:
     - imageChangeParams:
         automatic: true
@@ -178,3 +183,7 @@ parameters:
   name: MYSQL_VERSION
   required: true
   value: "5.7"
+- description: ConfigMap name to be mounted to expose SQL init scripts
+  displayName: SQL init ConfigMap
+  name: MYSQL_INIT_CONFIGMAP
+  required: false

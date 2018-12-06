@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: "yes"
+objects:
+- apiVersion: v1
+  data:
+    init.sql: |
+      CREATE TABLE Auth_Credentials(
+        id INT,
+        username VARCHAR(255),
+        password VARCHAR(255),
+        token VARCHAR(255),
+        date TIMESTAMP,
+        PRIMARY KEY (id)
+      );
+      
+      INSERT INTO Auth_Credentials(
+        id, username, password, token, date
+      ) values(
+        1, 'User1', 'Pass1', '', NULL
+      );
+      
+      INSERT INTO Auth_Credentials(
+        id, username, password, token, date
+      ) values (
+        2, 'User2', 'Pass2', '', NULL
+      );
+      
+      INSERT INTO Auth_Credentials(
+        id, username, password, token, date
+      ) values (
+        3, 'User3', 'Pass3', '', NULL
+      );
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: null
+    name: mysql-init-login-sql

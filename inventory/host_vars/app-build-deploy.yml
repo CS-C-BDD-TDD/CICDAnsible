@@ -1,6 +1,28 @@
 ---
 ansible_connection: local
 openshift_cluster_content:
+- object: app-configs
+  content:
+  - name: mysql-review-init-sql-configmap
+    template: "{{ playbook_dir }}/openshift-templates/mysql-init-review-sql/template.yml"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
+  - name: mysql-review-init-sql-configmap
+    template: "{{ playbook_dir }}/openshift-templates/mysql-init-login-sql/template.yml"
+    namespace: "{{ test_namespace }}"
+    tags:
+    - java-deploy
+  - name: mysql-review-init-sql-configmap
+    template: "{{ playbook_dir }}/openshift-templates/mysql-init-review-sql/template.yml"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - java-deploy
+  - name: mysql-review-init-sql-configmap
+    template: "{{ playbook_dir }}/openshift-templates/mysql-init-login-sql/template.yml"
+    namespace: "{{ dev_namespace }}"
+    tags:
+    - java-deploy
 - object: app-builds
   content:
   - name: build-parameters
