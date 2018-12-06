@@ -1,6 +1,6 @@
 MEMORY_LIMIT=1Gi
 DATABASE_SERVICE_NAME=humanreview-db-login
-MYSQL_DATABASE=humanreview-login
+MYSQL_DATABASE=humanreview_login
 VOLUME_CAPACITY=1Gi
 MYSQL_USER=user
 MYSQL_PASSWORD=Mprd2bnAMrcan!
