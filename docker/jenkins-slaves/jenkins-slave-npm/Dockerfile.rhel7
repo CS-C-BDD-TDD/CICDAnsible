@@ -13,10 +13,9 @@ LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
 ENV NODEJS_VERSION=10 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     HOME=/home/jenkins \
-    PATH=/usr/lib/jvm/jre-1.8.0-openjdk/bin:$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    CHROME_BIN=/bin/google-chrome
+    PATH=/usr/lib/jvm/jre-1.8.0-openjdk/bin:$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
 
-RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg-utils liberation-fonts curl wget" && \
+RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb curl wget" && \
     yum install -y --setopt=tsflags=nodocs \
       --disablerepo=* \
       --enablerepo=rhel-7-server-rpms \
