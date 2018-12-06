@@ -3,4 +3,4 @@ PARTNER_URL=http://hr-partner-yellowdog-test.apps.mgt.devsecops.gov/api/v1
 REGULAR_USER=Pass1
 REGULAR_PASS=User1
 REST_URL=http://human-review-backend-yellowdog-test.apps.mgt.devsecops.gov/api/v1
-SELENIUM_HUB=http://selenium-hub.selenium.svc:4444/`
+SELENIUM_HUB=http://selenium-hub.selenium.svc:4444/
