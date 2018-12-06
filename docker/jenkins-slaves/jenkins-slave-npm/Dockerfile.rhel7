@@ -16,8 +16,6 @@ ENV NODEJS_VERSION=10 \
     PATH=/usr/lib/jvm/jre-1.8.0-openjdk/bin:$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
     CHROME_BIN=/bin/google-chrome
 
-ADD https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm google-chrome-stable_current_x86_64.rpm
-
 RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg-utils liberation-fonts curl wget" && \
     yum install -y --setopt=tsflags=nodocs \
       --disablerepo=* \
@@ -28,9 +26,7 @@ RUN INSTALL_PKGS="rhoar-nodejs${NODEJS_VERSION} npm redhat-lsb libXScrnSaver xdg
     yum -y localinstall \
       --disablerepo=* \
       --enablerepo=rhel-7-server-rpms \
-      google-chrome-stable_current_x86_64.rpm && \
-    rm google-chrome-stable_current_x86_64.rpm && \
-    rpm -V $INSTALL_PKGS google-chrome-stable && \
+    rpm -V $INSTALL_PKGS && \
     yum clean all -y && \
     rm -rf /var/cache/yum
 
