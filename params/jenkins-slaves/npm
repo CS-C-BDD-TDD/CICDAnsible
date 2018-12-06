@@ -1,6 +1,5 @@
-SOURCE_REPOSITORY_URL=http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/CICDAnsible
+SOURCE_REPOSITORY_URL=http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/CICDAnsible.git
 SOURCE_CONTEXT_DIR=docker/jenkins-slaves/jenkins-slave-npm
-BUILDER_IMAGE_NAME=openshift/jenkins-slave-base-rhel7
 NAME=jenkins-slave-npm
 SOURCE_REPOSITORY_REF=master
 DOCKER_FILE_PATH=Dockerfile.rhel7
