@@ -4,5 +4,5 @@
 # dependencies to support this inventory
 
 # From 'CS-C-BDD-TDD/CICDAnsible'
-- src: https://github.com/CS-C-BDD-TDD/CICDAnsible
+- src: http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/CICDAnsible
   version: master

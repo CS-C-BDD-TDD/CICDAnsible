@@ -509,7 +509,7 @@ parameters:
   - name: SOURCE_REPOSITORY_URL
     description: The Git repository where the Docker build resources can be found
     displayName: Repository URL
-    value: https://github.com/CS-C-BDD-TDD/CICDAnsible
+    value: http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/CICDAnsible
   - name: SOURCE_REPOSITORY_REF
     value: master
     description: Branch from which to get docker build resources

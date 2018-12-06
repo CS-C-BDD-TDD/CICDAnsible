@@ -1,4 +1,4 @@
-PIPELINE_SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/human-review-ui.git
+PIPELINE_SOURCE_REPOSITORY_URL=http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/human-review-ui
 PIPELINE_SOURCE_REPOSITORY_REF=master
 NAME=vue-app
 S2I_BASE_IMAGE=httpd:2.4

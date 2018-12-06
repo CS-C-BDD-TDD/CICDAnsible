@@ -1,4 +1,4 @@
-PIPELINE_SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/human-review-backend.git
+PIPELINE_SOURCE_REPOSITORY_URL=http://gitlab.apps.mgt.devsecops.gov/CS-C-BB-TDD/human-review-backend
 PIPELINE_SOURCE_REPOSITORY_REF=master
 NAME=human-review-backend
 S2I_BASE_IMAGE=redhat-openjdk18-openshift:1.3
