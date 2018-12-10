@@ -1,9 +1,8 @@
-#invoke npm in jenkinsfile: sh "scl enable rh-nodejs8 'npm run build'"
-FROM openshift3/jenkins-slave-base-rhel7:v3.9
+FROM openshift3/jenkins-slave-base-rhel7:latest
 
 LABEL com.redhat.component="jenkins-slave-nodejs-rhel7-docker" \
       name="openshift3/jenkins-slave-nodejs-rhel7" \
-      version="3.9" \
+      version="3.11" \
       architecture="x86_64" \
       release="1" \
       io.k8s.display-name="Jenkins Slave Nodejs" \
