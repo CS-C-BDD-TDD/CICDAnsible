@@ -23,12 +23,12 @@ parameters:
   description: The base URL to be used for testing against the Human Review REST API
   displayName: Human Review REST API base URL
   required: true
-  value: http://human-review-backend-labs-test.apps.domino.rht-labs.com/api/v1
+  value: http://human-review-backend-yellowdog-test.apps.domino.rht-labs.com/api/v1
 - name: HUMAN_REVIEW_UI_BASE_URL
   description: The base URL to be used for testing against the Human Review REST API
   displayName: Human Review REST API base URL
   required: true
-  value: http://vue-app-labs-test.apps.domino.rht-labs.com/
+  value: http://vue-app-yellowdog-test.apps.domino.rht-labs.com/
 objects:
 - apiVersion: v1
   stringData:

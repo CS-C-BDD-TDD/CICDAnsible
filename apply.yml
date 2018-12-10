@@ -2,9 +2,9 @@
 - name: Deploy {{ target }} 
   hosts: "{{ target }}"
   vars:
-    ci_cd_namespace: labs-ci-cd
-    dev_namespace: labs-dev
-    test_namespace: labs-test
+    ci_cd_namespace: yellowdog
+    dev_namespace: yellowdog-demo
+    test_namespace: yellowdog-test
   tasks:
     - include_role:
         name: openshift-applier/roles/openshift-applier

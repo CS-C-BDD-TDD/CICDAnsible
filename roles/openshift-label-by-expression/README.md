@@ -12,7 +12,7 @@ labels to items which all contain a certain string. This role will OVERWRITE ALL
   roles:
     - role: openshift-label-by-expression
       vars:
-        target_namespace: labs-ci-cd      ## Apply this to ONLY objects in the specified namespace
+        target_namespace: yellowdog      ## Apply this to ONLY objects in the specified namespace
         name_pattern: ".*selenium.*"      ## Regex patterns are supported
         label: 'app=selenium'             ## The label to be applied
 ```
