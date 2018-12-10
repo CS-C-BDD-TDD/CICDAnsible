@@ -2,3 +2,4 @@ SOURCE_REPOSITORY_URL=https://github.com/CS-C-BDD-TDD/CICDAnsible.git
 NAME=jenkins-slave-zap
 SOURCE_REPOSITORY_REF=master
 SOURCE_CONTEXT_DIR=docker/jenkins-slaves/jenkins-slave-zap
+CONTAINER_REGISTRY=docker.artifactory.apps.mgt.devsecops.gov/yellowdog

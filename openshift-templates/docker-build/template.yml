@@ -25,8 +25,8 @@ objects:
     nodeSelector:
     output:
       to:
-        kind: ImageStreamTag
-        name: "${NAME}:latest"
+        kind: ${PUBLISH_TO}
+        name: "${CONTAINER_REGISTRY}/${NAME}:latest"
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -74,3 +74,13 @@ parameters:
   description: By default, the build will use the file Dockerfile in the root of the project, this option allows you to Override
   required: true
   value: Dockerfile
+- name: PUBLISH_TO
+  description: Where to publish container images to (Defaults to internal registry)
+  displayName: Image Output Target
+  required: true
+  value: ImageStreamTag
+- name: CONTAINER_REGISTRY
+  description: The hostname of a container registry where images should be published (if not using internal registry)
+  displayName: Container Registry
+  required: false
+  value: ''
